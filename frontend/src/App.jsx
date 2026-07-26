@@ -1,0 +1,33 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import HomePage from "./pages/HomePage";
+import ManifestoPage from "./pages/ManifestoPage";
+import VotePage from "./pages/VotePage";
+import ApplicationPage from "./pages/ApplicationPage";
+import ResultsPage from "./pages/ResultsPage";
+
+function Layout({ children, bare }) {
+  if (bare) return <div className="min-h-screen bg-[#F7F8FC]">{children}</div>;
+  return (
+    <div className="flex min-h-screen flex-col bg-[#F7F8FC]">
+      <Navbar />
+      <main className="flex-1">{children}</main>
+      <Footer />
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout><HomePage /></Layout>} />
+        <Route path="/team/:teamId" element={<Layout><ManifestoPage /></Layout>} />
+        <Route path="/vote/:teamId" element={<Layout bare><VotePage /></Layout>} />
+        <Route path="/apply" element={<Layout bare><ApplicationPage /></Layout>} />
+        <Route path="/results" element={<Layout bare><ResultsPage /></Layout>} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
