@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "../components/icons";
+import Reveal from "../components/Reveal";
 import {
   BarChart,
   Bar,
@@ -53,15 +54,15 @@ export default function ResultsPage() {
       <div className="relative mx-auto max-w-6xl px-6 py-8">
         {/* Top stat cards */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard label="Нийт өгсөн санал" value={totalVotes.toLocaleString()} sub={`${TOTAL_ELIGIBLE.toLocaleString()} эрхтэйгээс`} />
-          <StatCard label="Оролцооны хувь" value={`${turnout}%`} sub="бүртгэлтэй оюутнуудаас" />
-          <StatCard label="Сонгуулийн өдөр" value="2 / 3 өдөр" sub="Санал хураалт 8-р сарын 26-нд хаагдана" />
-          <StatCard label="Одоогоор тэргүүлж буй" value={leading.name} sub={`${leading.votes.toLocaleString()} санал`} />
+          <Reveal><StatCard label="Нийт өгсөн санал" value={totalVotes.toLocaleString()} sub={`${TOTAL_ELIGIBLE.toLocaleString()} эрхтэйгээс`} /></Reveal>
+          <Reveal delay={80}><StatCard label="Оролцооны хувь" value={`${turnout}%`} sub="бүртгэлтэй оюутнуудаас" /></Reveal>
+          <Reveal delay={160}><StatCard label="Сонгуулийн өдөр" value="2 / 3 өдөр" sub="Санал хураалт 8-р сарын 26-нд хаагдана" /></Reveal>
+          <Reveal delay={240}><StatCard label="Одоогоор тэргүүлж буй" value={leading.name} sub={`${leading.votes.toLocaleString()} санал`} /></Reveal>
         </div>
 
         <div className="mt-6 grid gap-6 lg:grid-cols-3">
           {/* Team standings */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/30 backdrop-blur-sm lg:col-span-2">
+          <Reveal className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/30 backdrop-blur-sm lg:col-span-2">
             <h2 className="font-display text-sm font-semibold">Багуудын байр эзэлсэн байдал</h2>
             <div className="mt-4 space-y-3">
               {[...teams]
@@ -102,10 +103,10 @@ export default function ResultsPage() {
                   );
                 })}
             </div>
-          </div>
+          </Reveal>
 
           {/* Votes by team bar chart */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/30 backdrop-blur-sm">
+          <Reveal className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/30 backdrop-blur-sm" delay={120}>
             <h2 className="font-display text-sm font-semibold">Багаар өгсөн санал</h2>
             <div className="mt-4 h-52">
               <ResponsiveContainer width="100%" height="100%">
@@ -153,7 +154,7 @@ export default function ResultsPage() {
                 </p>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
 
         <p className="mt-8 text-center text-xs text-white/30">

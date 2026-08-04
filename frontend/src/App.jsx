@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
@@ -8,6 +9,7 @@ import ManifestoPage from "./pages/ManifestoPage";
 import VotePage from "./pages/VotePage";
 import ApplicationPage from "./pages/ApplicationPage";
 import ResultsPage from "./pages/ResultsPage";
+import "./styles/transitions.css";
 
 function Layout({ children, bare }) {
   if (bare) return <div className="min-h-screen bg-[#F7F8FC]">{children}</div>;
@@ -20,10 +22,31 @@ function Layout({ children, bare }) {
   );
 }
 
-export default function App() {
+function AnimatedRoutes() {
+  const location = useLocation();
+  const [displayLocation, setDisplayLocation] = useState(location);
+  const [stage, setStage] = useState("in");
+
+  useEffect(() => {
+    if (location.pathname !== displayLocation.pathname) {
+      setStage("out");
+    }
+  }, [location, displayLocation.pathname]);
+
+  function handleAnimationEnd() {
+    if (stage === "out") {
+      window.scrollTo(0, 0);
+      setDisplayLocation(location);
+      setStage("in");
+    }
+  }
+
   return (
-    <BrowserRouter>
-      <Routes>
+    <div
+      className={stage === "out" ? "page-transition-out" : "page-transition-in"}
+      onAnimationEnd={handleAnimationEnd}
+    >
+      <Routes location={displayLocation}>
         <Route path="/" element={<Layout bare><HomePage /></Layout>} />
         <Route path="/home" element={<Layout><HomeLandingPage /></Layout>} />
         <Route path="/candidates" element={<Layout><CandidatesPage /></Layout>} />
@@ -32,6 +55,14 @@ export default function App() {
         <Route path="/apply" element={<Layout bare><ApplicationPage /></Layout>} />
         <Route path="/results" element={<Layout bare><ResultsPage /></Layout>} />
       </Routes>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AnimatedRoutes />
     </BrowserRouter>
   );
 }

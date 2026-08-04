@@ -27,7 +27,7 @@ function Field({ label, placeholder, value, onChange, type = "text" }) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-navy-900/15 px-3.5 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+        className="w-full rounded-lg border border-navy-900/15 px-3.5 py-2.5 text-sm outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
       />
     </div>
   );
@@ -55,7 +55,7 @@ function PersonForm({ role, person, setPerson }) {
             </p>
             <p className="text-xs text-navy-900/40">JPG or PNG, min 400×400px — shown on your team card and manifesto.</p>
           </div>
-          <label className="cursor-pointer rounded-lg border border-navy-900/15 px-3 py-1.5 text-xs font-semibold text-navy-900 hover:bg-navy-900/5">
+          <label className="cursor-pointer rounded-lg border border-navy-900/15 px-3 py-1.5 text-xs font-semibold text-navy-900 transition-colors duration-200 hover:bg-navy-900/5">
             Choose file
             <input
               type="file"
@@ -139,7 +139,10 @@ export default function ApplicationPage() {
         <p className="mt-2 text-sm text-navy-900/60">
           Thanks — the MSA Elections committee will review "{teamName || "your team"}" and follow up by email.
         </p>
-        <Link to="/" className="mt-6 inline-block rounded-lg bg-navy-950 px-5 py-2.5 text-sm font-semibold text-white hover:bg-navy-900">
+        <Link
+          to="/home"
+          className="mt-6 inline-block rounded-lg bg-navy-950 px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-navy-900 active:translate-y-0"
+        >
           Back to Election Site
         </Link>
       </div>
@@ -150,7 +153,7 @@ export default function ApplicationPage() {
     <div>
       <div className="border-b border-navy-900/10 bg-white">
         <div className="mx-auto flex max-w-2xl items-center justify-between px-6 py-4 text-sm">
-          <Link to="/" className="flex items-center gap-1.5 text-navy-900/60 hover:text-navy-900">
+          <Link to="/home" className="flex items-center gap-1.5 text-navy-900/60 transition-colors duration-200 hover:text-navy-900">
             <ArrowLeft size={16} />
             Team Application
           </Link>
@@ -162,6 +165,7 @@ export default function ApplicationPage() {
         <Stepper steps={steps} current={step} />
 
         <div className="mt-8 rounded-2xl border border-navy-900/10 bg-white p-6 shadow-card sm:p-8">
+        <div key={step} className="transition-in">
           {step === 1 && (
             <>
               <div className="mb-6">
@@ -236,7 +240,7 @@ export default function ApplicationPage() {
                       {pillars.length > 1 && (
                         <button
                           onClick={() => setPillars(pillars.filter((_, idx) => idx !== i))}
-                          className="absolute right-3 top-3 text-navy-900/30 hover:text-navy-900"
+                          className="absolute right-3 top-3 text-navy-900/30 transition-colors duration-200 hover:text-navy-900"
                         >
                           <X size={15} />
                         </button>
@@ -249,7 +253,7 @@ export default function ApplicationPage() {
                             setPillars(pillars.map((pl, idx) => (idx === i ? { ...pl, icon: e.target.value } : pl)))
                           }
                           placeholder="💡"
-                          className="rounded-lg border border-navy-900/15 px-3 py-2 text-center text-sm"
+                          className="rounded-lg border border-navy-900/15 px-3 py-2 text-center text-sm outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                         />
                         <input
                           value={p.title}
@@ -257,7 +261,7 @@ export default function ApplicationPage() {
                             setPillars(pillars.map((pl, idx) => (idx === i ? { ...pl, title: e.target.value } : pl)))
                           }
                           placeholder="e.g. Digital Campus Hub"
-                          className="rounded-lg border border-navy-900/15 px-3 py-2 text-sm"
+                          className="rounded-lg border border-navy-900/15 px-3 py-2 text-sm outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                         />
                       </div>
                       <textarea
@@ -267,7 +271,7 @@ export default function ApplicationPage() {
                           setPillars(pillars.map((pl, idx) => (idx === i ? { ...pl, desc: e.target.value } : pl)))
                         }
                         placeholder="Describe this pillar in 1–2 sentences…"
-                        className="mt-3 w-full rounded-lg border border-navy-900/15 px-3 py-2 text-sm"
+                        className="mt-3 w-full rounded-lg border border-navy-900/15 px-3 py-2 text-sm outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                       />
                     </div>
                   ))}
@@ -275,7 +279,7 @@ export default function ApplicationPage() {
                 {pillars.length < 4 && (
                   <button
                     onClick={() => setPillars([...pillars, { ...emptyPillar }])}
-                    className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:underline"
+                    className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600 transition-colors duration-200 hover:underline"
                   >
                     <Plus size={14} /> Add
                   </button>
@@ -293,7 +297,7 @@ export default function ApplicationPage() {
                       {initiatives.length > 1 && (
                         <button
                           onClick={() => setInitiatives(initiatives.filter((_, idx) => idx !== i))}
-                          className="absolute right-3 top-3 text-navy-900/30 hover:text-navy-900"
+                          className="absolute right-3 top-3 text-navy-900/30 transition-colors duration-200 hover:text-navy-900"
                         >
                           <X size={15} />
                         </button>
@@ -304,7 +308,7 @@ export default function ApplicationPage() {
                           setInitiatives(initiatives.map((x, idx) => (idx === i ? { ...x, headline: e.target.value } : x)))
                         }
                         placeholder={`${i + 1}. Initiative headline`}
-                        className="w-full rounded-lg border border-navy-900/15 px-3 py-2 text-sm font-medium"
+                        className="w-full rounded-lg border border-navy-900/15 px-3 py-2 text-sm font-medium outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                       />
                       <input
                         value={it.detail}
@@ -312,14 +316,14 @@ export default function ApplicationPage() {
                           setInitiatives(initiatives.map((x, idx) => (idx === i ? { ...x, detail: e.target.value } : x)))
                         }
                         placeholder="Supporting detail — how will you achieve this?"
-                        className="mt-2 w-full rounded-lg border border-navy-900/15 px-3 py-2 text-sm"
+                        className="mt-2 w-full rounded-lg border border-navy-900/15 px-3 py-2 text-sm outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                       />
                     </div>
                   ))}
                 </div>
                 <button
                   onClick={() => setInitiatives([...initiatives, { ...emptyInitiative }])}
-                  className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:underline"
+                  className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600 transition-colors duration-200 hover:underline"
                 >
                   <Plus size={14} /> Add
                 </button>
@@ -374,26 +378,27 @@ export default function ApplicationPage() {
               </div>
             </div>
           )}
+        </div>
 
           <div className="mt-8 flex items-center justify-between border-t border-navy-900/10 pt-6">
             <button
               onClick={prev}
               disabled={step === 1}
-              className="rounded-lg px-4 py-2 text-sm font-semibold text-navy-900/60 disabled:opacity-0"
+              className="rounded-lg px-4 py-2 text-sm font-semibold text-navy-900/60 transition-colors duration-200 disabled:opacity-0"
             >
               Previous
             </button>
             {step < 4 ? (
               <button
                 onClick={next}
-                className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
+                className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-blue-700 active:translate-y-0"
               >
                 Continue
               </button>
             ) : (
               <button
                 onClick={() => setSubmitted(true)}
-                className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
+                className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-blue-700 active:translate-y-0"
               >
                 Submit Application
               </button>

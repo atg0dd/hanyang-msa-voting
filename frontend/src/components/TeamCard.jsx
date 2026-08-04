@@ -5,7 +5,7 @@ export default function TeamCard({ team }) {
   const accent = accentMap[team.accent];
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-navy-900/5 bg-white shadow-card">
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-navy-900/5 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       <div className={`h-1.5 ${accent.bar}`} />
       <div className="flex flex-1 flex-col p-6">
         <span className={`mb-4 inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold ${accent.badge}`}>
@@ -37,13 +37,13 @@ export default function TeamCard({ team }) {
         <div className="flex flex-col gap-2">
           <Link
             to={`/vote/${team.id}`}
-            className={`rounded-lg px-4 py-2.5 text-center text-sm font-semibold text-white transition ${accent.solid}`}
+            className={`rounded-lg px-4 py-2.5 text-center text-sm font-semibold text-white transition-all duration-200 active:scale-[0.98] ${accent.solid}`}
           >
             Энэ багт санал өгөх
           </Link>
           <Link
             to={`/team/${team.id}`}
-            className="rounded-lg border border-navy-900/10 px-4 py-2.5 text-center text-sm font-semibold text-navy-900 transition hover:bg-navy-900/5"
+            className="rounded-lg border border-navy-900/10 px-4 py-2.5 text-center text-sm font-semibold text-navy-900 transition-all duration-200 hover:bg-navy-900/5 active:scale-[0.98]"
           >
             Мөрийн хөтөлбөр үзэх
           </Link>

@@ -11,7 +11,7 @@ export default function Stepper({ steps, current }) {
           <div key={label} className="flex flex-1 items-center last:flex-none">
             <div className="flex flex-col items-center gap-1.5">
               <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold ${
+                className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold transition-colors duration-300 ${
                   state === "done"
                     ? "bg-blue-600 text-white"
                     : state === "active"
@@ -22,7 +22,7 @@ export default function Stepper({ steps, current }) {
                 {state === "done" ? <Check size={15} /> : stepNum}
               </div>
               <span
-                className={`text-[11px] font-medium ${
+                className={`text-[11px] font-medium transition-colors duration-300 ${
                   state === "upcoming" ? "text-navy-900/40" : "text-navy-900"
                 }`}
               >
@@ -31,7 +31,7 @@ export default function Stepper({ steps, current }) {
             </div>
             {stepNum !== steps.length && (
               <div
-                className={`mx-2 h-0.5 flex-1 ${
+                className={`mx-2 h-0.5 flex-1 transition-colors duration-300 ${
                   stepNum < current ? "bg-blue-600" : "bg-navy-900/10"
                 }`}
               />

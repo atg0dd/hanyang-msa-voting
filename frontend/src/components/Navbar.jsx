@@ -30,7 +30,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-navy-900/10 bg-navy-950/95 backdrop-blur text-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link to="/home" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
+        <Link to="/home" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight transition-opacity duration-200 hover:opacity-80">
           <img src={logo} alt="MSA HYU ERICA" className="h-9 w-9 rounded-full object-contain" />
           MSA Elections
         </Link>
@@ -52,7 +52,7 @@ export default function Navbar() {
 
         <Link
           to="/apply"
-          className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-white/90"
+          className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-navy-950 transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/90 active:translate-y-0"
         >
           Нэр дэвшигчээр бүртгүүлэх
         </Link>

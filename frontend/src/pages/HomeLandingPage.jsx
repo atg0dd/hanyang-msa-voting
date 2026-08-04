@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import TeamCard from "../components/TeamCard";
 import FaqItem from "../components/FaqItem";
+import Reveal from "../components/Reveal";
 import { IdCard, ClipboardList, ShieldCheck, ArrowRight } from "../components/icons";
 import { teams } from "../data/teams";
 
@@ -95,7 +96,7 @@ export default function HomeLandingPage() {
       {/* Meet the candidates */}
       <section id="candidates" className="bg-[#F0F2FA] px-4 py-14 sm:px-6 sm:py-20">
         <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-xl text-center">
+          <Reveal className="mx-auto max-w-xl text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
               3 баг өрсөлдөж байна
             </span>
@@ -106,10 +107,12 @@ export default function HomeLandingPage() {
               Баг тус бүр Ерөнхийлөгч, Дэд ерөнхийлөгчөөс бүрдсэн хос болон өрсөлдөж байна. Итгэдэг багаа
               сонгож дэмжээрэй.
             </p>
-          </div>
+          </Reveal>
           <div className="mt-10 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {teams.map((team) => (
-              <TeamCard key={team.id} team={team} />
+            {teams.map((team, i) => (
+              <Reveal key={team.id} delay={i * 100}>
+                <TeamCard team={team} />
+              </Reveal>
             ))}
           </div>
         </div>
@@ -117,7 +120,7 @@ export default function HomeLandingPage() {
 
       {/* Need help voting */}
       <section className="px-4 py-14 sm:px-6 sm:py-20">
-        <div className="mx-auto grid max-w-6xl overflow-hidden rounded-2xl border border-navy-900/5 bg-white shadow-card lg:grid-cols-2">
+        <Reveal className="mx-auto grid max-w-6xl overflow-hidden rounded-2xl border border-navy-900/5 bg-white shadow-card lg:grid-cols-2">
           <div className="p-8 sm:p-10">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
               Гарын авлага
@@ -150,12 +153,12 @@ export default function HomeLandingPage() {
               <span className="relative text-5xl">🗳️</span>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* FAQ */}
       <section className="bg-[#F0F2FA] px-4 py-14 sm:px-6 sm:py-20">
-        <div className="mx-auto max-w-3xl text-center">
+        <Reveal className="mx-auto max-w-3xl text-center">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
             Асуулт байна уу?
           </span>
@@ -165,15 +168,18 @@ export default function HomeLandingPage() {
           <p className="mt-2 text-sm text-navy-900/60">
             Сонгуулийн үйл явцын талаар мэдэх шаардлагатай бүх зүйл.
           </p>
-        </div>
+        </Reveal>
 
-        <div className="mx-auto mt-10 max-w-3xl space-y-3">
-          {faqs.map((f, i) => (
-            <FaqItem key={f.q} question={f.q} answer={f.a} defaultOpen={i >= 3} />
+        <Reveal className="mx-auto mt-10 max-w-3xl space-y-3" delay={100}>
+          {faqs.map((f) => (
+            <FaqItem key={f.q} question={f.q} answer={f.a} />
           ))}
-        </div>
+        </Reveal>
 
-        <div className="mx-auto mt-8 flex max-w-3xl flex-col items-center justify-between gap-4 rounded-2xl bg-blue-50 px-6 py-6 sm:flex-row">
+        <Reveal
+          className="mx-auto mt-8 flex max-w-3xl flex-col items-center justify-between gap-4 rounded-2xl bg-blue-50 px-6 py-6 sm:flex-row"
+          delay={150}
+        >
           <div className="text-center sm:text-left">
             <p className="font-semibold text-navy-900">Асуулт байсаар байна уу?</p>
             <p className="mt-1 text-sm text-navy-900/60">
@@ -186,7 +192,7 @@ export default function HomeLandingPage() {
           >
             Тусламж авах
           </a>
-        </div>
+        </Reveal>
       </section>
     </div>
   );
