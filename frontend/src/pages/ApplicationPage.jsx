@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Upload, Plus, X } from "lucide-react";
+import { ArrowLeft, Upload, Plus, X } from "../components/icons";
 import Stepper from "../components/Stepper";
 
 const steps = ["President", "Vice President", "Vision & Platform", "Review"];

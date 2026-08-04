@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
+import CandidatesPage from "./pages/CandidatesPage";
 import ManifestoPage from "./pages/ManifestoPage";
 import VotePage from "./pages/VotePage";
 import ApplicationPage from "./pages/ApplicationPage";
@@ -22,7 +23,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout><HomePage /></Layout>} />
+        <Route path="/" element={<Layout bare><HomePage /></Layout>} />
+        <Route path="/candidates" element={<Layout><CandidatesPage /></Layout>} />
         <Route path="/team/:teamId" element={<Layout><ManifestoPage /></Layout>} />
         <Route path="/vote/:teamId" element={<Layout bare><VotePage /></Layout>} />
         <Route path="/apply" element={<Layout bare><ApplicationPage /></Layout>} />

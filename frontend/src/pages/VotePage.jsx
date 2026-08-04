@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
-import { ArrowLeft, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ShieldCheck } from "../components/icons";
 import { teams, accentMap } from "../data/teams";
 
 function randomCode() {

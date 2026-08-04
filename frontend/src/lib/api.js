@@ -1,0 +1,49 @@
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080/api";
+
+async function request(path, options = {}) {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+    ...options,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || `Request failed with ${response.status}`);
+  }
+
+  const contentType = response.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  return response.text();
+}
+
+export function getTeams() {
+  return request("/teams");
+}
+
+export function getTeamById(teamId) {
+  return request(`/teams/${teamId}`);
+}
+
+export function getResults() {
+  return request("/results");
+}
+
+export function submitVote(payload) {
+  return request("/votes", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function submitApplication(payload) {
+  return request("/applications", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
