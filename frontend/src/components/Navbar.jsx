@@ -1,8 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const navItems = [
-  { label: "Home", to: "/" },
-  { label: "Candidates", to: "/", hash: "candidates" },
+  { label: "Home", to: "/home" },
+  { label: "Candidates", to: "/home", hash: "candidates" },
   { label: "Results", to: "/results" },
 ];
 
@@ -14,12 +14,12 @@ export default function Navbar() {
     if (!item.hash) return; // regular route, let Link handle it normally
     e.preventDefault();
 
-    if (location.pathname === "/") {
-      // already home — just scroll
+    if (location.pathname === "/home") {
+      // already on home — just scroll
       document.getElementById(item.hash)?.scrollIntoView({ behavior: "smooth" });
     } else {
       // navigate home first, then scroll once it's rendered
-      navigate("/");
+      navigate("/home");
       setTimeout(() => {
         document.getElementById(item.hash)?.scrollIntoView({ behavior: "smooth" });
       }, 100);
@@ -29,7 +29,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-navy-900/10 bg-navy-950/95 backdrop-blur text-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
+        <Link to="/home" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
           <span className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-500 text-sm">🗳️</span>
           MSA Elections
         </Link>
