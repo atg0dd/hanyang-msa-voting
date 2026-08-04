@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 const navItems = [
   { label: "Нүүр", to: "/home" },
@@ -30,7 +31,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 border-b border-navy-900/10 bg-navy-950/95 backdrop-blur text-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link to="/home" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
-          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-500 text-sm">🗳️</span>
+          <img src={logo} alt="MSA HYU ERICA" className="h-9 w-9 rounded-full object-contain" />
           MSA Elections
         </Link>
 
