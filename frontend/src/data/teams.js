@@ -4,7 +4,7 @@ export const teams = [
     name: "Team Digital Future",
     slogan: "Transparent governance. Connected campus. Your voice, amplified.",
     accent: "blue",
-    votes: 2841,
+    votes: 49,
     president: { name: "Kim Jun-su", dept: "Computer Science", initials: "JS" },
     vp: { name: "Choi Soo-yeon", dept: "Political Science & Diplomacy", initials: "CS" },
     vision:
@@ -55,7 +55,7 @@ export const teams = [
     name: "Team Student First",
     slogan: "Welfare, inclusion, and a campus that works for everyone.",
     accent: "purple",
-    votes: 2204,
+    votes: 38,
     president: { name: "Lee Min-ah", dept: "Business Administration", initials: "MA" },
     vp: { name: "Han Dong-wook", dept: "Sociology", initials: "HD" },
     vision:
@@ -106,7 +106,7 @@ export const teams = [
     name: "Team Green ERICA",
     slogan: "Sustainable spaces, accessible campus, a future we're proud of.",
     accent: "green",
-    votes: 1797,
+    votes: 31,
     president: { name: "Park Ji-hoon", dept: "Industrial Design", initials: "JH" },
     vp: { name: "Yoon Se-jin", dept: "Architecture", initials: "YS" },
     vision:

@@ -96,6 +96,69 @@ export function ShieldCheck({ size = 18, className = "" }) {
   );
 }
 
+export function Mail({ size = 18, className = "" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+    >
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3 7 9 6 9-6" />
+    </svg>
+  );
+}
+
+export function KeyRound({ size = 18, className = "" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+    >
+      <circle cx="7.5" cy="15.5" r="3.5" />
+      <path d="m10.5 12.5 8-8" />
+      <path d="m16 6 2 2" />
+      <path d="m19 3 2 2" />
+    </svg>
+  );
+}
+
+export function AlertCircle({ size = 18, className = "" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 8v4.5" />
+      <path d="M12 16h.01" />
+    </svg>
+  );
+}
+
 export function Upload({ size = 18, className = "" }) {
   return (
     <svg

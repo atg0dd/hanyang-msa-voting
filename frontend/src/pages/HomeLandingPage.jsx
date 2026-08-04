@@ -32,14 +32,14 @@ const faqs = [
 ];
 
 const steps = [
-  { icon: IdCard, label: "1-р алхам: Оюутны ID-ээр баталгаажуулах" },
+  { icon: IdCard, label: "1-р алхам: Оюутны мэйлээр өөрийгөө баталгаажуулах" },
   { icon: ClipboardList, label: "2-р алхам: Нэр дэвшигчдийн мөрийн хөтөлбөртэй танилцах" },
-  { icon: ShieldCheck, label: "3-р алхам: Аюулгүй, шифрлэгдсэн саналаа илгээх" },
+  { icon: ShieldCheck, label: "3-р алхам: Саналаа илгээх" },
 ];
 
 const stats = [
   { value: "3", label: "Нэр дэвшсэн баг" },
-  { value: "10,000+", label: "Бүртгэлтэй оюутан" },
+  { value: "150+", label: "Бүртгэлтэй оюутан" },
   { value: "3 өдөр", label: "Санал хураах хугацаа" },
 ];
 
@@ -56,14 +56,14 @@ export default function HomeLandingPage() {
         <div className="relative mx-auto max-w-2xl">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-semibold text-blue-700 ring-1 ring-blue-200">
             <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-            2026 ОНЫ ERICA ОЮУТНЫ ХОЛБООНЫ СОНГУУЛЬ
+            2026 ОНЫ ОЮУТНЫ ХОЛБООНЫ СОНГУУЛЬ
           </span>
           <h1 className="mt-5 font-display text-3xl font-semibold leading-tight text-navy-900 sm:text-5xl">
-            Бидний Хамт Олны Ирээдүйг Тодорхойлъё
+            Таны Санал Монгол Оюутнуудын Ирээдүй 
           </h1>
           <p className="mt-4 text-sm leading-relaxed text-navy-900/60 sm:text-base">
             Нэр дэвшигчдийн мөрийн хөтөлбөртэй танилцаж, сонгуулийн зорилтуудыг судалж, аюулгүйгээр
-            саналаа өгнө үү. Таны дуу хоолой Ханьян ERICA-ийн ирээдүйг тодорхойлно.
+            саналаа өгнө үү. 
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
@@ -77,7 +77,7 @@ export default function HomeLandingPage() {
               to="/results"
               className="rounded-full border border-navy-900/15 bg-white px-7 py-3 text-sm font-semibold text-navy-900 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-navy-900/5 hover:shadow-md active:translate-y-0 sm:px-8 sm:text-base"
             >
-              Сонгуулийн самбар
+              Үр дүнг харах
             </Link>
           </div>
 
@@ -103,7 +103,7 @@ export default function HomeLandingPage() {
               Нэр дэвшигчидтэй танилцах
             </h2>
             <p className="mt-2 text-sm text-navy-900/60 sm:text-base">
-              Баг тус бүр Ерөнхийлөгч, Дэд ерөнхийлөгчийн хос болон өрсөлдөж байна. Итгэдэг багаа
+              Баг тус бүр Ерөнхийлөгч, Дэд ерөнхийлөгчөөс бүрдсэн хос болон өрсөлдөж байна. Итгэдэг багаа
               сонгож дэмжээрэй.
             </p>
           </div>
@@ -126,8 +126,7 @@ export default function HomeLandingPage() {
               Санал өгөхөд тусламж хэрэгтэй юу?
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-navy-900/60">
-              Оюутны үнэмлэхээр баталгаажуулах, нэр дэвшигчдийн мөрийн хөтөлбөртэй танилцах, албан
-              ёсны ERICA портал дээр саналаа гаргах алхам алхмаар зааврыг үзнэ үү.
+              Та сонгосон багтаа дараах алхмаар өөрийн саналыг өгөх боломжтой.
             </p>
             <ul className="mt-6 space-y-4">
               {steps.map((s) => (

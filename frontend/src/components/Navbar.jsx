@@ -1,9 +1,9 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const navItems = [
-  { label: "Home", to: "/home" },
-  { label: "Candidates", to: "/home", hash: "candidates" },
-  { label: "Results", to: "/results" },
+  { label: "Нүүр", to: "/home" },
+  { label: "Нэр дэвшигчид", to: "/home", hash: "candidates" },
+  { label: "Үр дүн", to: "/results" },
 ];
 
 export default function Navbar() {
@@ -53,7 +53,7 @@ export default function Navbar() {
           to="/apply"
           className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-white/90"
         >
-          Apply as Candidate
+          Нэр дэвшигчээр бүртгүүлэх
         </Link>
       </div>
     </header>
