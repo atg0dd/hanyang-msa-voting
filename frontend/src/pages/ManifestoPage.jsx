@@ -1,6 +1,7 @@
 import { Link, useParams, Navigate } from "react-router-dom";
 import { ArrowLeft, Check } from "../components/icons";
 import Reveal from "../components/Reveal";
+import CandidateCard from "../components/CandidateCard";
 import { teams, accentMap } from "../data/teams";
 
 export default function ManifestoPage() {
@@ -32,43 +33,26 @@ export default function ManifestoPage() {
         </div>
       </div>
 
-      {/* Hero */}
-      <div className="bg-navy-950 px-6 py-12 text-white">
-        <div className="mx-auto max-w-4xl">
-          <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold text-white ${accent.solid}`}>
-            {team.name}
-          </span>
-
-          <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
-            <div className="flex items-center gap-3">
-              <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl text-base font-semibold text-white ${accent.solid}`}>
-                {team.president.initials}
-              </div>
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-white/40">Ерөнхийлөгч</p>
-                <p className="font-semibold text-white">{team.president.name}</p>
-                <p className="text-sm text-white/50">{team.president.dept}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl text-base font-semibold text-white ${accent.solid}`}>
-                {team.vp.initials}
-              </div>
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-white/40">Дэд ерөнхийлөгч</p>
-                <p className="font-semibold text-white">{team.vp.name}</p>
-                <p className="text-sm text-white/50">{team.vp.dept}</p>
-              </div>
-            </div>
-          </div>
-
-          <p className="mt-8 max-w-xl text-lg italic text-white/70">"{team.slogan}"</p>
-        </div>
-      </div>
-
       <div className="mx-auto max-w-4xl px-6 py-14">
+        {/* Candidate cards */}
+        <Reveal>
+          <div className="text-center">
+            <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold text-white ${accent.solid}`}>
+              {team.name}
+            </span>
+            <h2 className="mt-4 font-display text-xl font-semibold text-navy-900 sm:text-2xl">
+              Нэр дэвшигчидтэй танилцах
+            </h2>
+            <p className="mt-1.5 text-sm text-navy-900/50">Дэлгэрэнгүй мэдээлэл үзэхийн тулд картыг товшино уу</p>
+          </div>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            <CandidateCard role="Ерөнхийлөгч" person={team.president} accent={accent} slogan={team.slogan} />
+            <CandidateCard role="Дэд ерөнхийлөгч" person={team.vp} accent={accent} slogan={team.slogan} />
+          </div>
+        </Reveal>
+
         {/* Vision */}
-        <Reveal className="mx-auto max-w-2xl text-center">
+        <Reveal className="mx-auto mt-16 max-w-2xl text-center">
           <div className="flex items-center justify-center gap-4">
             <span className="h-px flex-1 bg-navy-900/10" />
             <h2 className="shrink-0 text-xs font-semibold uppercase tracking-[0.2em] text-navy-900/40">

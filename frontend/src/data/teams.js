@@ -5,8 +5,22 @@ export const teams = [
     slogan: "Transparent governance. Connected campus. Your voice, amplified.",
     accent: "blue",
     votes: 49,
-    president: { name: "Kim Jun-su", dept: "Computer Science", initials: "JS" },
-    vp: { name: "Choi Soo-yeon", dept: "Political Science & Diplomacy", initials: "CS" },
+    president: {
+      name: "Kim Jun-su",
+      dept: "Computer Science",
+      initials: "JS",
+      studentId: "20191234",
+      bio: "A third-year Computer Science student who has spent the last two years building internal tools for student clubs and interning at a Seoul-based dev agency. Believes most of the MSA's problems are communication problems in disguise.",
+      achievements: "Led the ERICA Coding Club to its first inter-university hackathon win in 2025; published two open-source tools used by over 200 international students to navigate visa paperwork.",
+    },
+    vp: {
+      name: "Choi Soo-yeon",
+      dept: "Political Science & Diplomacy",
+      initials: "CS",
+      studentId: "20201789",
+      bio: "A fourth-year Political Science & Diplomacy student who has represented Mongolian students at two national model UN conferences held in Korea. Focused on translating student concerns into concrete institutional requests.",
+      achievements: "Served two terms as class representative; organized a joint cultural exchange event between the Mongolian and Korean student associations that drew over 300 attendees.",
+    },
     vision:
       "A campus where every student has real-time access to decisions that affect them — where technology removes friction, not humanity. Together we will build a transparent, digitally connected ERICA where governance is open and every voice is heard.",
     pillars: [
@@ -56,8 +70,22 @@ export const teams = [
     slogan: "Welfare, inclusion, and a campus that works for everyone.",
     accent: "purple",
     votes: 38,
-    president: { name: "Lee Min-ah", dept: "Business Administration", initials: "MA" },
-    vp: { name: "Han Dong-wook", dept: "Sociology", initials: "HD" },
+    president: {
+      name: "Lee Min-ah",
+      dept: "Business Administration",
+      initials: "MA",
+      studentId: "20181045",
+      bio: "A senior Business Administration student who has worked part-time in the international student support office for over a year, seeing firsthand where the system fails students who need help most.",
+      achievements: "Redesigned the emergency support fund application form as a volunteer project, cutting average processing time from three weeks to five days.",
+    },
+    vp: {
+      name: "Han Dong-wook",
+      dept: "Sociology",
+      initials: "HD",
+      studentId: "20200456",
+      bio: "A third-year Sociology student researching international student wellbeing on Korean campuses. Volunteers as a peer counselor for newly arrived Mongolian freshmen.",
+      achievements: "Co-authored a department survey on international student mental health access, cited in two campus policy proposals.",
+    },
     vision:
       "Every student deserves a campus that meets them where they are — regardless of major, background, or circumstance. We will put welfare and inclusion at the center of every decision the MSA makes.",
     pillars: [
@@ -107,8 +135,22 @@ export const teams = [
     slogan: "Sustainable spaces, accessible campus, a future we're proud of.",
     accent: "green",
     votes: 31,
-    president: { name: "Park Ji-hoon", dept: "Industrial Design", initials: "JH" },
-    vp: { name: "Yoon Se-jin", dept: "Architecture", initials: "YS" },
+    president: {
+      name: "Park Ji-hoon",
+      dept: "Industrial Design",
+      initials: "JH",
+      studentId: "20190987",
+      bio: "A fourth-year Industrial Design student who designed a modular composting station prototype as a senior project, now hoping to bring it to campus for real.",
+      achievements: "Won second place in the university's annual sustainability design competition; interned at a Seoul eco-design studio over two summers.",
+    },
+    vp: {
+      name: "Yoon Se-jin",
+      dept: "Architecture",
+      initials: "YS",
+      studentId: "20210321",
+      bio: "A second-year Architecture student focused on accessible building design, motivated by a close friend's experience navigating campus in a wheelchair.",
+      achievements: "Completed an independent accessibility audit of three ERICA campus buildings, later shared with the facilities management office.",
+    },
     vision:
       "The choices we make about our campus today shape the community we hand off tomorrow. We will build a greener, more accessible ERICA — one sustainable decision at a time.",
     pillars: [
