@@ -4,13 +4,15 @@ import FaqItem from "../components/FaqItem";
 import Reveal from "../components/Reveal";
 import { IdCard, ClipboardList, ShieldCheck, ArrowRight } from "../components/icons";
 import { teams } from "../data/teams";
+import { getTeams } from "../lib/api";
+import { useApi } from "../hooks/useApi";
 
 const faqs = [
   {
     q: "MSA сонгуульд хэн санал өгөх эрхтэй вэ?",
     a: "ERICA-д бүртгэлтэй, идэвхтэй суралцаж буй бүх оюутан @hanyang.ac.kr имэйлээр баталгаажуулан нэг удаа санал өгөх эрхтэй.",
   },
-  {
+  { 
     q: "Санал өгөхийн өмнө хэрхэн бүртгэлээ баталгаажуулах вэ?",
     a: "Оюутны имэйл хаягтаа 6 оронтой баталгаажуулах код авч, түүнийгээ оруулснаар таны бүртгэл баталгаажина.",
   },
@@ -45,6 +47,8 @@ const stats = [
 ];
 
 export default function HomeLandingPage() {
+  const { data: teams, loading } = useApi(getTeams, []);
+
   return (
     <div>
       {/* Hero */}
@@ -107,14 +111,19 @@ export default function HomeLandingPage() {
               Баг тус бүр Ерөнхийлөгч, Дэд ерөнхийлөгчөөс бүрдсэн хос болон өрсөлдөж байна. Итгэдэг багаа
               сонгож дэмжээрэй.
             </p>
+    
           </Reveal>
+            {loading ? (
+              <p className="mt-10 text-center text-sm text-navy-900/40">Ачааллаж байна…</p>
+              ) : (
           <div className="mt-10 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {teams.map((team, i) => (
-              <Reveal key={team.id} delay={i * 100}>
-                <TeamCard team={team} />
-              </Reveal>
-            ))}
-          </div>
+          {teams.map((team, i) => (
+            <Reveal key={team.id} delay={i * 100}>
+              <TeamCard team={team} />
+            </Reveal>
+          ))}
+        </div>
+        )}
         </div>
       </section>
 
