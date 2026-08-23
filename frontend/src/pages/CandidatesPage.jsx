@@ -3,9 +3,19 @@ import { ArrowLeft } from "../components/icons";
 import TeamCard from "../components/TeamCard";
 import Reveal from "../components/Reveal";
 import { teams } from "../data/teams";
+import { getTeams } from "../lib/api";
+import { useApi } from "../hooks/useApi.js";
 import "../styles/transitions.css";
 
 export default function CandidatesPage() {
+  const {data: teams, loading, error } = useApi(getTeams, []);
+  
+  if (loading) 
+    return <div className="py-24 text-center text-navy-900/50">Ачааллаж байна…</div>;
+    
+  if (error) 
+    return <div className="py-24 text-center text-red-600">Мэдээлэл ачаалахад алдаа гарлаа.</div>;
+
   return (
     <div>
       <div className="border-b border-navy-900/10 bg-white sticky top-0 z-10">
