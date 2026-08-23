@@ -3,11 +3,15 @@ import { ArrowLeft, Check } from "../components/icons";
 import Reveal from "../components/Reveal";
 import CandidateCard from "../components/CandidateCard";
 import { teams, accentMap } from "../data/teams";
+import { getTeamById } from "../lib/api";
+import { useApi } from "../hooks/useApi";
 
 export default function ManifestoPage() {
   const { teamId } = useParams();
-  const team = teams.find((t) => t.id === teamId);
-  if (!team) return <Navigate to="/candidates" replace />;
+  const { data: team, loading, error } = useApi(() => getTeamById(teamId), [teamId]);
+
+  if (loading) return <div className="py-24 text-center text-navy-900/50">Ачааллаж байна…</div>;
+  if (error || !team) return <Navigate to="/candidates" replace />;
 
   const accent = accentMap[team.accent];
 
