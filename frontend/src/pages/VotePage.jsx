@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { ArrowLeft, ShieldCheck, Mail, KeyRound, AlertCircle, Check } from "../components/icons";
-import { teams, accentMap } from "../data/teams";
+import { accentMap } from "../data/teams";
+import { getTeamById } from "../lib/api";
+import { useApi } from "../hooks/useApi";
 
 function randomCode() {
   return String(Math.floor(100000 + Math.random() * 900000));
@@ -13,7 +15,7 @@ function randomReceiptId() {
 
 export default function VotePage() {
   const { teamId } = useParams();
-  const team = teams.find((t) => t.id === teamId);
+  const { data: team, loading: teamLoading, error: teamError } = useApi(() => getTeamById(teamId), [teamId])  
 
   const [stage, setStage] = useState("email"); // email | code | receipt
   const [email, setEmail] = useState("");
@@ -31,7 +33,8 @@ export default function VotePage() {
     return () => clearInterval(id);
   }, [stage, resendIn]);
 
-  if (!team) return <Navigate to="/candidates" replace />;
+  if (teamLoading) return <div className="flex min-h-screen items-center justify-center text-navy-900/50">Ачааллаж байна…</div>;
+  if (teamError || !team) return <Navigate to="/candidates" replace />;
   const accent = accentMap[team.accent];
   const codeComplete = code.every((d) => d !== "");
 

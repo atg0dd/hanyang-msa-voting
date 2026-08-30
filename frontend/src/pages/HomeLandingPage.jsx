@@ -3,7 +3,6 @@ import TeamCard from "../components/TeamCard";
 import FaqItem from "../components/FaqItem";
 import Reveal from "../components/Reveal";
 import { IdCard, ClipboardList, ShieldCheck, ArrowRight } from "../components/icons";
-import { teams } from "../data/teams";
 import { getTeams } from "../lib/api";
 import { useApi } from "../hooks/useApi";
 
@@ -47,7 +46,7 @@ const stats = [
 ];
 
 export default function HomeLandingPage() {
-  const { data: teams, loading } = useApi(getTeams, []);
+  const { data: teams, loading, error } = useApi(getTeams, []);
 
   return (
     <div>
@@ -113,17 +112,19 @@ export default function HomeLandingPage() {
             </p>
     
           </Reveal>
-            {loading ? (
-              <p className="mt-10 text-center text-sm text-navy-900/40">Ачааллаж байна…</p>
-              ) : (
-          <div className="mt-10 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {teams.map((team, i) => (
-            <Reveal key={team.id} delay={i * 100}>
-              <TeamCard team={team} />
-            </Reveal>
-          ))}
-        </div>
-        )}
+          {loading ? (
+            <p className="mt-10 text-center text-sm text-navy-900/40">Ачааллаж байна…</p>
+          ) : error ? (
+            <p className="mt-10 text-center text-sm text-red-500">Мэдээлэл ачаалахад алдаа гарлаа.</p>
+          ) : (
+            <div className="mt-10 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {teams.map((team, i) => (
+                <Reveal key={team.id} delay={i * 100}>
+                  <TeamCard team={team} />
+                </Reveal>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

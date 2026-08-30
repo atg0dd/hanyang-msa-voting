@@ -2,7 +2,7 @@ import { Link, useParams, Navigate } from "react-router-dom";
 import { ArrowLeft, Check } from "../components/icons";
 import Reveal from "../components/Reveal";
 import CandidateCard from "../components/CandidateCard";
-import { teams, accentMap } from "../data/teams";
+import { accentMap } from "../data/teams";
 import { getTeamById } from "../lib/api";
 import { useApi } from "../hooks/useApi";
 

@@ -2,13 +2,12 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "../components/icons";
 import TeamCard from "../components/TeamCard";
 import Reveal from "../components/Reveal";
-import { teams } from "../data/teams";
 import { getTeams } from "../lib/api";
-import { useApi } from "../hooks/useApi.js";
+import { useApi } from "../hooks/useApi";
 import "../styles/transitions.css";
 
 export default function CandidatesPage() {
-  const {data: teams, loading, error } = useApi(getTeams, []);
+  const { data: teams, loading, error } = useApi(getTeams, []);
   
   if (loading) 
     return <div className="py-24 text-center text-navy-900/50">Ачааллаж байна…</div>;
