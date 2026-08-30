@@ -1,0 +1,15 @@
+services: 
+  postgres:
+    image: postgres:16-alpine
+    container_name: msavoting-postgres
+    environment: 
+      POSTGRES_DB: msavoting
+      POSTGRES_USER: msavoting
+      POSTGRES_PASSWORD: msavoting
+    ports:
+      - "5433:5432"
+    volumes: 
+     - msavoting-pgdata:/var/lib/postgresql/data
+
+volumes:
+  msavoting-pgdata:
