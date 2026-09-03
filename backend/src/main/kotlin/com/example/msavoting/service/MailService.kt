@@ -36,7 +36,7 @@ class BrevoMailService(
             {
               "sender": {"name": "${escape(fromName)}", "email": "${escape(fromAddress)}"},
               "to": [{"email": "${escape(toEmail)}"}],
-              "subject": "${escape(subject())}",
+              "subject": "${escape(subject(code))}",
               "textContent": "${escape(textBody(code))}",
               "htmlContent": "${escape(htmlBody(code))}"
             }
@@ -46,7 +46,7 @@ class BrevoMailService(
             .uri(URI.create("https://api.brevo.com/v3/smtp/email"))
             .timeout(Duration.ofSeconds(15))
             .header("accept", "application/json")
-            .header("content-type", "application/json")
+            .header("content-type", "application/json; charset=utf-8")
             .header("api-key", apiKey)
             .POST(HttpRequest.BodyPublishers.ofString(body))
             .build()
@@ -58,7 +58,11 @@ class BrevoMailService(
         }
     }
 
-    private fun subject() = "MSA Сонгууль — Баталгаажуулах код"
+    // Kept ASCII: non-ASCII text in email headers (From-name, Subject) needs RFC 2047
+    // MIME encoding, which Brevo's API was not applying correctly — it was corrupting
+    // the Cyrillic From-name into mojibake in the actual delivered email. The HTML/text
+    // body below is unaffected since MIME body content declares its own UTF-8 charset.
+    private fun subject(code: String) = "MSA Elections verification code: $code"
 
     private fun textBody(code: String) = """
         Таны баталгаажуулах код: $code
