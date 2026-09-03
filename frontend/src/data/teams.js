@@ -23,4 +23,12 @@ export const accentMap = {
     bar: "bg-emerald-500",
     soft: "bg-emerald-50",
   },
+  orange: {
+    badge: "bg-orange-50 text-orange-700 ring-1 ring-orange-200",
+    solid: "bg-orange-600 hover:bg-orange-700",
+    text: "text-orange-600",
+    ring: "ring-orange-200",
+    bar: "bg-orange-500",
+    soft: "bg-orange-50",
+  },
 };

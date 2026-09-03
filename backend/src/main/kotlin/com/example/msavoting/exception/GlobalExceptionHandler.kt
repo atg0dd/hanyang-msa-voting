@@ -12,7 +12,12 @@ class GlobalExceptionHandler {
     fun handleTeamNotFound(ex: TeamNotFoundException): ResponseEntity<Map<String, String>> =
         ResponseEntity.status(HttpStatus.NOT_FOUND).body(mapOf("error" to (ex.message ?: "Not found")))
 
-    @ExceptionHandler(InvalidEmailDomainException::class, InvalidCodeException::class, CodeExpiredException::class)
+    @ExceptionHandler(
+        InvalidEmailDomainException::class,
+        InvalidCodeException::class,
+        CodeExpiredException::class,
+        InvalidTeamDataException::class,
+    )
     fun handleBadRequest(ex: RuntimeException): ResponseEntity<Map<String, String>> =
         ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapOf("error" to (ex.message ?: "Bad request")))
 
