@@ -227,6 +227,9 @@ export default function VotePage() {
               <span className={`font-semibold ${accent.text}`}>{team.name}</span>-д өгсөн таны санал
               бүртгэгдэнэ.
             </p>
+            <p className="mt-2 text-xs text-navy-900/40">
+              Кодыг олохгүй бол спам/junk хавтсаа шалгана уу.
+            </p>
 
             <label className="mt-5 block text-xs font-semibold uppercase tracking-wide text-navy-900/50">
               Баталгаажуулах код
