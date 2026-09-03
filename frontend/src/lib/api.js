@@ -11,7 +11,14 @@ async function request(path, options = {}) {
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(errorText || `Request failed with ${response.status}`);
+    let message = errorText;
+    try {
+      const parsed = JSON.parse(errorText);
+      if (parsed?.error) message = parsed.error;
+    } catch {
+      // not JSON, fall back to the raw text below
+    }
+    throw new Error(message || `Request failed with ${response.status}`);
   }
 
   const contentType = response.headers.get("content-type") || "";
@@ -32,6 +39,13 @@ export function getTeamById(teamId) {
 
 export function getResults() {
   return request("/results");
+}
+
+export function requestVoteCode(payload) {
+  return request("/votes/request-code", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
 
 export function submitVote(payload) {

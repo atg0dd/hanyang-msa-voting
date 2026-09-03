@@ -9,7 +9,23 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class GlobalExceptionHandler {
 
     @ExceptionHandler(TeamNotFoundException::class)
-    fun handleTeamNotFound(ex: TeamNotFoundException): ResponseEntity<Map<String, String>> {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mapOf("error" to (ex.message ?: "Not found")))
-    }
+    fun handleTeamNotFound(ex: TeamNotFoundException): ResponseEntity<Map<String, String>> =
+        ResponseEntity.status(HttpStatus.NOT_FOUND).body(mapOf("error" to (ex.message ?: "Not found")))
+
+    @ExceptionHandler(InvalidEmailDomainException::class, InvalidCodeException::class, CodeExpiredException::class)
+    fun handleBadRequest(ex: RuntimeException): ResponseEntity<Map<String, String>> =
+        ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapOf("error" to (ex.message ?: "Bad request")))
+
+    @ExceptionHandler(AlreadyVotedException::class)
+    fun handleAlreadyVoted(ex: AlreadyVotedException): ResponseEntity<Map<String, String>> =
+        ResponseEntity.status(HttpStatus.CONFLICT).body(mapOf("error" to (ex.message ?: "Already voted")))
+
+    @ExceptionHandler(TooManyAttemptsException::class)
+    fun handleTooManyAttempts(ex: TooManyAttemptsException): ResponseEntity<Map<String, String>> =
+        ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(mapOf("error" to (ex.message ?: "Too many attempts")))
+
+    @ExceptionHandler(ResendTooSoonException::class)
+    fun handleResendTooSoon(ex: ResendTooSoonException): ResponseEntity<Map<String, Any>> =
+        ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+            .body(mapOf("error" to (ex.message ?: "Too soon"), "retryAfterSeconds" to ex.retryAfterSeconds))
 }
