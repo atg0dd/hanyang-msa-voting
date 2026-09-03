@@ -55,9 +55,3 @@ export function submitVote(payload) {
   });
 }
 
-export function submitApplication(payload) {
-  return request("/applications", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}

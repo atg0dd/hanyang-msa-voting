@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
@@ -7,7 +7,6 @@ import HomeLandingPage from "./pages/HomeLandingPage";
 import CandidatesPage from "./pages/CandidatesPage";
 import ManifestoPage from "./pages/ManifestoPage";
 import VotePage from "./pages/VotePage";
-import ApplicationPage from "./pages/ApplicationPage";
 import ResultsPage from "./pages/ResultsPage";
 import "./styles/transitions.css";
 
@@ -52,7 +51,7 @@ function AnimatedRoutes() {
         <Route path="/candidates" element={<Layout><CandidatesPage /></Layout>} />
         <Route path="/team/:teamId" element={<Layout><ManifestoPage /></Layout>} />
         <Route path="/vote/:teamId" element={<Layout bare><VotePage /></Layout>} />
-        <Route path="/apply" element={<Layout bare><ApplicationPage /></Layout>} />
+        <Route path="/apply" element={<Navigate to="/home" replace />} />
         <Route path="/results" element={<Layout bare><ResultsPage /></Layout>} />
       </Routes>
     </div>
