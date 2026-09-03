@@ -18,6 +18,7 @@ import com.example.msavoting.repository.TeamRepository
 import com.example.msavoting.repository.VerificationCodeRepository
 import com.example.msavoting.repository.VoteRepository
 import com.example.msavoting.repository.VoterRecordRepository
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -38,6 +39,7 @@ class VoteService(
     private val voterRecordRepository: VoterRecordRepository,
     private val voterHashService: VoterHashService,
     private val mailService: MailService,
+    @Value("\${app.election.enforce-one-vote:true}") private val enforceOneVote: Boolean,
 ) {
     private val secureRandom = SecureRandom()
 
@@ -48,7 +50,7 @@ class VoteService(
         val team = teamRepository.findBySlug(request.teamId) ?: throw TeamNotFoundException(request.teamId)
 
         val emailHash = voterHashService.hash(email)
-        if (voterRecordRepository.existsByEmailHash(emailHash)) {
+        if (enforceOneVote && voterRecordRepository.existsByEmailHash(emailHash)) {
             throw AlreadyVotedException()
         }
 
@@ -111,17 +113,19 @@ class VoteService(
             throw InvalidCodeException()
         }
 
-        if (voterRecordRepository.existsByEmailHash(emailHash)) {
-            throw AlreadyVotedException()
-        }
+        if (enforceOneVote) {
+            if (voterRecordRepository.existsByEmailHash(emailHash)) {
+                throw AlreadyVotedException()
+            }
 
-        // Record the voter identity before the anonymous vote row, so a concurrent
-        // double-submit is rejected by the unique constraint here rather than
-        // slipping an extra tally into the anonymous votes table.
-        try {
-            voterRecordRepository.save(VoterRecord(emailHash = emailHash))
-        } catch (ex: DataIntegrityViolationException) {
-            throw AlreadyVotedException()
+            // Record the voter identity before the anonymous vote row, so a concurrent
+            // double-submit is rejected by the unique constraint here rather than
+            // slipping an extra tally into the anonymous votes table.
+            try {
+                voterRecordRepository.save(VoterRecord(emailHash = emailHash))
+            } catch (ex: DataIntegrityViolationException) {
+                throw AlreadyVotedException()
+            }
         }
 
         val team = verification.team
