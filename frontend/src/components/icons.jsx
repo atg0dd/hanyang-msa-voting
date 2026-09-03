@@ -1,3 +1,12 @@
+export function UserPlaceholder({ size = 96, className = "" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} width={size} height={size} aria-hidden="true">
+      <circle cx="12" cy="9" r="4" fill="currentColor" />
+      <circle cx="12" cy="23" r="9" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function ArrowLeft({ size = 16, className = "" }) {
   return (
     <svg

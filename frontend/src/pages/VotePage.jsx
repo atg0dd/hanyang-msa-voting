@@ -1,26 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
-import { ArrowLeft, ShieldCheck, Mail, KeyRound, AlertCircle, Check } from "../components/icons";
-import { teams, accentMap } from "../data/teams";
-
-function randomCode() {
-  return String(Math.floor(100000 + Math.random() * 900000));
-}
-
-function randomReceiptId() {
-  return "MSA-" + Math.random().toString(36).slice(2, 8).toUpperCase();
-}
+import { ArrowLeft, ShieldCheck, Mail, KeyRound, Check } from "../components/icons";
+import { accentMap } from "../data/teams";
+import { getTeamById, requestVoteCode, submitVote } from "../lib/api";
+import { useApi } from "../hooks/useApi";
 
 export default function VotePage() {
   const { teamId } = useParams();
-  const team = teams.find((t) => t.id === teamId);
+  const { data: team, loading: teamLoading, error: teamError } = useApi(() => getTeamById(teamId), [teamId])
 
   const [stage, setStage] = useState("email"); // email | code | receipt
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [sending, setSending] = useState(false);
   const [code, setCode] = useState(["", "", "", "", "", ""]);
-  const [sentCode, setSentCode] = useState("");
   const [codeError, setCodeError] = useState("");
+  const [verifying, setVerifying] = useState(false);
   const [resendIn, setResendIn] = useState(60);
   const [receipt, setReceipt] = useState(null);
 
@@ -31,22 +26,44 @@ export default function VotePage() {
     return () => clearInterval(id);
   }, [stage, resendIn]);
 
-  if (!team) return <Navigate to="/candidates" replace />;
+  if (teamLoading) return <div className="flex min-h-screen items-center justify-center text-navy-900/50">Ачааллаж байна…</div>;
+  if (teamError || !team) return <Navigate to="/candidates" replace />;
   const accent = accentMap[team.accent];
   const codeComplete = code.every((d) => d !== "");
 
-  function handleSendCode(e) {
+  async function handleSendCode(e) {
     e.preventDefault();
     if (!/^[a-zA-Z0-9._%+-]+@hanyang\.ac\.kr$/.test(email)) {
       setEmailError("@hanyang.ac.kr-ээр төгссөн байх ёстой");
       return;
     }
     setEmailError("");
-    const generated = randomCode();
-    setSentCode(generated);
-    console.log(`[Demo] Verification code for ${email}: ${generated}`);
-    setResendIn(60);
-    setStage("code");
+    setSending(true);
+    try {
+      const res = await requestVoteCode({ email, teamId: team.id });
+      setResendIn(res.resendAvailableInSeconds ?? 60);
+      setCode(["", "", "", "", "", ""]);
+      setCodeError("");
+      setStage("code");
+    } catch (err) {
+      setEmailError(err.message);
+    } finally {
+      setSending(false);
+    }
+  }
+
+  async function handleResendCode() {
+    if (resendIn > 0) return;
+    setSending(true);
+    try {
+      const res = await requestVoteCode({ email, teamId: team.id });
+      setResendIn(res.resendAvailableInSeconds ?? 60);
+      setCodeError("");
+    } catch (err) {
+      setCodeError(err.message);
+    } finally {
+      setSending(false);
+    }
   }
 
   function handleCodeChange(i, value) {
@@ -59,31 +76,35 @@ export default function VotePage() {
     }
   }
 
-  function handleVerifyCode(e) {
+  async function handleVerifyCode(e) {
     e.preventDefault();
     const entered = code.join("");
     if (entered.length < 6) {
       setCodeError("6 оронтой кодоо бүтэн оруулна уу.");
       return;
     }
-    if (entered !== sentCode) {
-      setCodeError("Код таарахгүй байна. Консолоос демо кодоо шалгана уу.");
-      return;
-    }
     setCodeError("");
-    setReceipt({
-      id: randomReceiptId(),
-      voter: email,
-      team: team.name,
-      time: new Date().toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-      }),
-    });
-    setStage("receipt");
+    setVerifying(true);
+    try {
+      const res = await submitVote({ email, code: entered });
+      setReceipt({
+        id: res.receiptId,
+        voter: email,
+        team: res.teamName,
+        time: new Date(res.castAt).toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        }),
+      });
+      setStage("receipt");
+    } catch (err) {
+      setCodeError(err.message);
+    } finally {
+      setVerifying(false);
+    }
   }
 
   return (
@@ -182,10 +203,10 @@ export default function VotePage() {
 
             <button
               type="submit"
-              disabled={!email}
+              disabled={!email || sending}
               className="mt-5 w-full rounded-lg bg-blue-600 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
             >
-              Баталгаажуулах код илгээх
+              {sending ? "Илгээж байна…" : "Баталгаажуулах код илгээх"}
             </button>
 
             <p className="mt-4 text-center text-xs text-navy-900/40">
@@ -207,14 +228,6 @@ export default function VotePage() {
               бүртгэгдэнэ.
             </p>
 
-            <div className="mt-4 flex items-start gap-2.5 rounded-xl bg-amber-50 px-3.5 py-3 text-xs text-amber-800">
-              <AlertCircle size={16} className="mt-0.5 shrink-0" />
-              <p>
-                <span className="font-semibold">Демо горим:</span> жинхэнэ имэйл илгээгдэхгүй — консол
-                (F12) нээж кодоо харна уу.
-              </p>
-            </div>
-
             <label className="mt-5 block text-xs font-semibold uppercase tracking-wide text-navy-900/50">
               Баталгаажуулах код
             </label>
@@ -235,11 +248,11 @@ export default function VotePage() {
 
             <button
               type="submit"
-              disabled={!codeComplete}
+              disabled={!codeComplete || verifying}
               className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
             >
-              Баталгаажуулж, санал өгөх
-              <Check size={15} />
+              {verifying ? "Шалгаж байна…" : "Баталгаажуулж, санал өгөх"}
+              {!verifying && <Check size={15} />}
             </button>
 
             <div className="mt-4 flex items-center justify-between text-xs font-semibold">
@@ -252,13 +265,8 @@ export default function VotePage() {
               </button>
               <button
                 type="button"
-                disabled={resendIn > 0}
-                onClick={() => {
-                  const generated = randomCode();
-                  setSentCode(generated);
-                  console.log(`[Demo] New verification code for ${email}: ${generated}`);
-                  setResendIn(60);
-                }}
+                disabled={resendIn > 0 || sending}
+                onClick={handleResendCode}
                 className="text-navy-900/40 disabled:cursor-not-allowed"
               >
                 {resendIn > 0 ? `${resendIn}с дараа дахин илгээх` : "Кодыг дахин илгээх"}
