@@ -63,7 +63,7 @@ export default function ResultsPage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Reveal><StatCard label="Нийт өгсөн санал" value={totalVotesCast.toLocaleString()} sub={`${totalEligibleVoters.toLocaleString()} эрхтэйгээс`} /></Reveal>
           <Reveal delay={80}><StatCard label="Оролцооны хувь" value={`${turnoutPercentage}%`} sub="бүртгэлтэй оюутнуудаас" /></Reveal>
-          <Reveal delay={160}><StatCard label="Сонгуулийн өдөр" value="2 / 3 өдөр" sub="Санал хураалт 8-р сарын 26-нд хаагдана" /></Reveal>
+          <Reveal delay={160}><StatCard label="Сонгуулийн өдөр" value="2 / 3 өдөр" sub="Санал хураалт 9-р сарын 16-нд хаагдана" /></Reveal>
           <Reveal delay={240}><StatCard label="Одоогоор тэргүүлж буй" value={leading.name} sub={`${leading.votes.toLocaleString()} санал`} /></Reveal>
         </div>
 
@@ -157,7 +157,7 @@ export default function ResultsPage() {
 
         <p className="mt-8 text-center text-xs text-white/30">
           Үр дүн урьдчилсан бөгөөд хэдэн минут тутам шинэчлэгдэнэ. Эцсийн баталгаажсан үр дүнг санал
-          хураалт 8-р сарын 26-нд 18:00 цагт хаагдсанаас хойш 24 цагийн дотор нийтэлнэ.
+          хураалт 9-р сарын 16-нд 18:00 цагт хаагдсанаас хойш 24 цагийн дотор нийтэлнэ.
         </p>
       </div>
     </div>
