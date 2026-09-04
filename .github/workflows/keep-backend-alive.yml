@@ -1,0 +1,24 @@
+name: Keep backend alive
+
+# Render's free tier spins the backend down after ~15 minutes of no
+# traffic, and the first request after that takes 30-60+ seconds to
+# wake it back up. Pinging a lightweight, side-effect-free GET
+# endpoint every 10 minutes keeps it warm so real visitors never hit
+# that cold start.
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping backend
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 https://hanyang-msa-voting.onrender.com/api/teams)
+          echo "Backend responded with status $status"
+          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+            echo "::warning::Backend returned non-2xx status ($status)"
+          fi
