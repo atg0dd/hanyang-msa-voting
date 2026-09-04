@@ -8,4 +8,6 @@ class CandidateInfo(
         @Column(nullable = false) var name: String,
         @Column(nullable = false) var dept: String,
         @Column(nullable = false) var initials: String,
+        @Column(columnDefinition = "bytea") var photo: ByteArray? = null,
+        @Column(length = 50) var photoContentType: String? = null,
 )

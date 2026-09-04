@@ -25,6 +25,14 @@ class Team(
                         name = "initials",
                         column = Column(name = "president_initials", nullable = false)
                 ),
+                AttributeOverride(
+                        name = "photo",
+                        column = Column(name = "president_photo")
+                ),
+                AttributeOverride(
+                        name = "photoContentType",
+                        column = Column(name = "president_photo_content_type")
+                ),
         )
         var president: CandidateInfo,
         @Embedded
@@ -40,6 +48,14 @@ class Team(
                 AttributeOverride(
                         name = "initials",
                         column = Column(name = "vp_initials", nullable = false)
+                ),
+                AttributeOverride(
+                        name = "photo",
+                        column = Column(name = "vp_photo")
+                ),
+                AttributeOverride(
+                        name = "photoContentType",
+                        column = Column(name = "vp_photo_content_type")
                 ),
         )
         var vp: CandidateInfo,

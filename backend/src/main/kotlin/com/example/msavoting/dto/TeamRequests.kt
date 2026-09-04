@@ -14,6 +14,8 @@ data class CreateTeamRequest(
 data class PersonRequest(
     val name: String,
     val dept: String,
+    val photoBase64: String? = null,
+    val photoContentType: String? = null,
 )
 
 data class PillarRequest(

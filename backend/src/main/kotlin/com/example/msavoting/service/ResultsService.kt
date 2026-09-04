@@ -29,8 +29,8 @@ class ResultsService(
                     accent = team.accent,
                     votes = votes,
                     percentage = percentageOf(votes, totalVotesCast),
-                    president = team.president.toResponse(),
-                    vp = team.vp.toResponse(),
+                    president = team.president.toResponse(team.slug, "president"),
+                    vp = team.vp.toResponse(team.slug, "vp"),
                 )
             }
             .sortedByDescending { it.votes }

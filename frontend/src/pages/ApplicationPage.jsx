@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Plus, X } from "../components/icons";
+import { ArrowLeft, Plus, X, Upload } from "../components/icons";
 import Stepper from "../components/Stepper";
 import { createTeam } from "../lib/api";
 
 const steps = ["President", "Vice President", "Vision & Platform", "Review"];
 
-const emptyPerson = { name: "", dept: "" };
+const MAX_PHOTO_BYTES = 2 * 1024 * 1024; // 2MB, must match the backend limit
+const ALLOWED_PHOTO_TYPES = ["image/jpeg", "image/png"];
+
+const emptyPerson = { name: "", dept: "", photoName: "", photoBase64: "", photoContentType: "" };
 const emptyPillar = { icon: "", title: "", desc: "" };
 const emptyInitiative = { headline: "", detail: "" };
 
@@ -33,6 +36,27 @@ function Field({ label, placeholder, value, onChange, type = "text" }) {
 }
 
 function PersonForm({ role, person, setPerson }) {
+  const [photoError, setPhotoError] = useState("");
+
+  function handlePhotoChange(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!ALLOWED_PHOTO_TYPES.includes(file.type)) {
+      setPhotoError("Photo must be a JPEG or PNG image.");
+      return;
+    }
+    if (file.size > MAX_PHOTO_BYTES) {
+      setPhotoError("Photo must be under 2MB.");
+      return;
+    }
+    setPhotoError("");
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPerson({ ...person, photoName: file.name, photoBase64: reader.result, photoContentType: file.type });
+    };
+    reader.readAsDataURL(file);
+  }
+
   return (
     <div>
       <h1 className="font-display text-lg font-semibold text-navy-900">{role}'s Information</h1>
@@ -40,6 +64,35 @@ function PersonForm({ role, person, setPerson }) {
 
       <div className="mt-5 inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
         Running as {role}
+      </div>
+
+      <div className="mt-6">
+        <label className="mb-1.5 block text-xs font-semibold text-navy-900/60">Official Photo</label>
+        <div className="flex items-center gap-4 rounded-lg border border-dashed border-navy-900/20 p-4">
+          {person.photoBase64 ? (
+            <img src={person.photoBase64} alt="" className="h-12 w-12 rounded-full object-cover" />
+          ) : (
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-navy-900/5 text-navy-900/30">
+              <Upload size={18} />
+            </div>
+          )}
+          <div className="flex-1">
+            <p className="text-sm font-medium text-navy-900">
+              {person.photoName || "Upload official photo (optional)"}
+            </p>
+            <p className="text-xs text-navy-900/40">JPG or PNG, under 2MB — shown on the manifesto page.</p>
+            {photoError && <p className="mt-1 text-xs text-red-600">{photoError}</p>}
+          </div>
+          <label className="cursor-pointer rounded-lg border border-navy-900/15 px-3 py-1.5 text-xs font-semibold text-navy-900 transition-colors duration-200 hover:bg-navy-900/5">
+            Choose file
+            <input
+              type="file"
+              accept="image/png,image/jpeg"
+              className="hidden"
+              onChange={handlePhotoChange}
+            />
+          </label>
+        </div>
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -94,8 +147,8 @@ export default function ApplicationPage() {
         slogan,
         accent,
         vision,
-        president,
-        vp,
+        president: { name: president.name, dept: president.dept, photoBase64: president.photoBase64, photoContentType: president.photoContentType },
+        vp: { name: vp.name, dept: vp.dept, photoBase64: vp.photoBase64, photoContentType: vp.photoContentType },
         pillars: pillars.filter((p) => p.title.trim()),
         initiatives: initiatives.filter((i) => i.headline.trim()),
       });

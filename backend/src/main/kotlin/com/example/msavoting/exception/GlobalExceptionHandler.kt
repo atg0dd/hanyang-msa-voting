@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
-    @ExceptionHandler(TeamNotFoundException::class)
-    fun handleTeamNotFound(ex: TeamNotFoundException): ResponseEntity<Map<String, String>> =
+    @ExceptionHandler(TeamNotFoundException::class, PhotoNotFoundException::class)
+    fun handleTeamNotFound(ex: RuntimeException): ResponseEntity<Map<String, String>> =
         ResponseEntity.status(HttpStatus.NOT_FOUND).body(mapOf("error" to (ex.message ?: "Not found")))
 
     @ExceptionHandler(

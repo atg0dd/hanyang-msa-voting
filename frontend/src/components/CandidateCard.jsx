@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ShieldCheck, IdCard, ArrowRight, UserPlaceholder } from "./icons";
+import { API_BASE_URL } from "../lib/api";
 
 export default function CandidateCard({ role, person, accent, slogan }) {
   const [flipped, setFlipped] = useState(false);
@@ -18,7 +19,15 @@ export default function CandidateCard({ role, person, accent, slogan }) {
             <span className="absolute left-3 top-3 rounded-full bg-white/85 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-navy-900/60 backdrop-blur">
               {role}
             </span>
-            <UserPlaceholder size={104} className={`${accent.text} opacity-40`} />
+            {person.photoUrl ? (
+              <img
+                src={`${API_BASE_URL}${person.photoUrl}`}
+                alt={person.name}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <UserPlaceholder size={104} className={`${accent.text} opacity-40`} />
+            )}
             <div
               className={`absolute -bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full text-xs font-bold text-white ring-4 ring-white ${accent.solid}`}
             >
