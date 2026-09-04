@@ -228,7 +228,8 @@ export default function VotePage() {
               бүртгэгдэнэ.
             </p>
             <p className="mt-2 text-xs text-navy-900/40">
-              Кодыг олохгүй бол спам/junk хавтсаа шалгана уу.
+              Имэйл ирэхэд хэдэн минут орчим саатаж болзошгүй тул түр хүлээнэ үү. Кодыг олохгүй бол
+              спам/junk хавтсаа шалгана уу.
             </p>
 
             <label className="mt-5 block text-xs font-semibold uppercase tracking-wide text-navy-900/50">
