@@ -17,7 +17,11 @@ jobs:
     steps:
       - name: Ping backend
         run: |
-          status=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 https://hanyang-msa-voting.onrender.com/api/teams)
+          # curl itself (timeout, DNS, connection refused) must not fail this
+          # step - GitHub Actions runs bash with `set -e`, so a cold backend
+          # that's briefly unreachable would otherwise kill the job before
+          # the status-code check below even runs.
+          status=$(curl -s -o /dev/null -w "%{http_code}" --max-time 90 https://hanyang-msa-voting.onrender.com/api/teams || echo "000")
           echo "Backend responded with status $status"
           if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
             echo "::warning::Backend returned non-2xx status ($status)"
