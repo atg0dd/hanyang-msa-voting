@@ -68,22 +68,29 @@ function PersonForm({ role, person, setPerson }) {
 
       <div className="mt-6">
         <label className="mb-1.5 block text-xs font-semibold text-navy-900/60">Official Photo</label>
-        <div className="flex items-center gap-4 rounded-lg border border-dashed border-navy-900/20 p-4">
-          {person.photoBase64 ? (
-            <img src={person.photoBase64} alt="" className="h-12 w-12 rounded-full object-cover" />
-          ) : (
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-navy-900/5 text-navy-900/30">
-              <Upload size={18} />
+        <div className="flex flex-col items-start gap-3 rounded-lg border border-dashed border-navy-900/20 p-4 sm:flex-row sm:items-center sm:gap-4">
+          <div className="flex w-full items-center gap-3 sm:w-auto">
+            {person.photoBase64 ? (
+              <img src={person.photoBase64} alt="" className="h-12 w-12 shrink-0 rounded-full object-cover" />
+            ) : (
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-navy-900/5 text-navy-900/30">
+                <Upload size={18} />
+              </div>
+            )}
+            <div className="min-w-0 flex-1 sm:hidden">
+              <p className="truncate text-sm font-medium text-navy-900">
+                {person.photoName || "Upload official photo (optional)"}
+              </p>
+              <p className="text-xs text-navy-900/40">JPG or PNG, under 2MB</p>
             </div>
-          )}
-          <div className="flex-1">
+          </div>
+          <div className="hidden flex-1 sm:block">
             <p className="text-sm font-medium text-navy-900">
               {person.photoName || "Upload official photo (optional)"}
             </p>
             <p className="text-xs text-navy-900/40">JPG or PNG, under 2MB — shown on the manifesto page.</p>
-            {photoError && <p className="mt-1 text-xs text-red-600">{photoError}</p>}
           </div>
-          <label className="cursor-pointer rounded-lg border border-navy-900/15 px-3 py-1.5 text-xs font-semibold text-navy-900 transition-colors duration-200 hover:bg-navy-900/5">
+          <label className="w-full cursor-pointer rounded-lg border border-navy-900/15 px-3 py-1.5 text-center text-xs font-semibold text-navy-900 transition-colors duration-200 hover:bg-navy-900/5 sm:w-auto">
             Choose file
             <input
               type="file"
@@ -92,6 +99,7 @@ function PersonForm({ role, person, setPerson }) {
               onChange={handlePhotoChange}
             />
           </label>
+          {photoError && <p className="text-xs text-red-600">{photoError}</p>}
         </div>
       </div>
 
@@ -221,13 +229,13 @@ export default function ApplicationPage() {
 
               <div className="mb-6">
                 <label className="mb-1.5 block text-xs font-semibold text-navy-900/60">Accent Color</label>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {accents.map((a) => (
                     <button
                       key={a.value}
                       type="button"
                       onClick={() => setAccent(a.value)}
-                      className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors duration-200 ${
+                      className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-semibold transition-colors duration-200 ${
                         accent === a.value ? "border-navy-900 text-navy-900" : "border-navy-900/15 text-navy-900/50"
                       }`}
                     >

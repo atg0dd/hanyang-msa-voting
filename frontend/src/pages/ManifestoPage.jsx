@@ -19,18 +19,19 @@ export default function ManifestoPage() {
     <div>
       {/* Top bar */}
       <div className="border-b border-navy-900/10 bg-white">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4 text-sm">
-          <div className="flex items-center gap-3">
-            <Link to="/candidates" className="flex items-center gap-1.5 text-navy-900/60 hover:text-navy-900">
+        <div className="mx-auto flex max-w-4xl items-center justify-between gap-3 px-4 py-4 text-sm sm:px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <Link to="/candidates" className="flex shrink-0 items-center gap-1.5 text-navy-900/60 hover:text-navy-900">
               <ArrowLeft size={16} />
-              Нэр дэвшигчид рүү буцах
+              <span className="hidden sm:inline">Нэр дэвшигчид рүү буцах</span>
+              <span className="sm:hidden">Буцах</span>
             </Link>
-            <span className="text-navy-900/20">|</span>
-            <span className="font-semibold text-navy-900">{team.name}</span>
+            <span className="hidden text-navy-900/20 sm:inline">|</span>
+            <span className="hidden truncate font-semibold text-navy-900 sm:inline">{team.name}</span>
           </div>
           <Link
             to={`/vote/${team.id}`}
-            className={`rounded-lg px-4 py-2 text-sm font-semibold text-white ${accent.solid}`}
+            className={`shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold text-white ${accent.solid}`}
           >
             🗳️ Санал өгөх
           </Link>
