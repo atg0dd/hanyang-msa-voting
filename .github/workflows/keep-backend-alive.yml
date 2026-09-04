@@ -1,14 +1,17 @@
 name: Keep backend alive
 
-# Render's free tier spins the backend down after ~15 minutes of no
-# traffic, and the first request after that takes 30-60+ seconds to
-# wake it back up. Pinging a lightweight, side-effect-free GET
-# endpoint every 10 minutes keeps it warm so real visitors never hit
-# that cold start.
+# Two independent things go cold on their own schedule: Render's free
+# app instance sleeps after ~15 minutes idle, and Neon's free Postgres
+# compute separately suspends after just 5 minutes idle (Neon docs:
+# resume from that is normally sub-second, so if a request is taking
+# many seconds even on a warm app, Neon's DB is what went back to
+# sleep between pings). Pinging a DB-backed endpoint every 4 minutes -
+# under Neon's 5-minute window - keeps both warm with one ping. Free:
+# this repo is public, so GitHub Actions minutes aren't metered here.
 
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "*/4 * * * *"
   workflow_dispatch:
 
 jobs:
