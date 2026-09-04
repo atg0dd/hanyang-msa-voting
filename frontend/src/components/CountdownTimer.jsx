@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-// Target: election start, Sep 14 2026 09:00 KST
-const TARGET = new Date("2026-09-14T09:00:00+09:00").getTime();
+// Target: election start, Sep 14 2026 00:00 KST
+const TARGET = new Date("2026-09-14T00:00:00+09:00").getTime();
 
 function getTimeLeft() {
   const diff = Math.max(TARGET - Date.now(), 0);

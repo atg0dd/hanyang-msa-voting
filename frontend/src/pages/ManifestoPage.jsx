@@ -110,7 +110,7 @@ export default function ManifestoPage() {
           <span className="text-2xl">🗳️</span>
           <h3 className="mt-3 font-display text-xl font-semibold">Итгэлтэй байна уу? Саналаа өгье.</h3>
           <p className="mx-auto mt-2 max-w-sm text-sm text-white/60">
-            Санал хураалт 2026 оны 9-р сарын 14–16-нд явагдана. Таны санал нууц бөгөөд шифрлэгдсэн болно.
+            Санал хураалт 2026 оны 9-р сарын 14–15-нд явагдана. Таны санал нууц бөгөөд шифрлэгдсэн болно.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Link
