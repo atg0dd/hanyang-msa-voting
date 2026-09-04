@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import CountdownTimer from "../components/CountdownTimer";
-import { ArrowRight } from "../components/icons";
+import { ArrowRight, FileText, ClipboardList } from "../components/icons";
 import "../styles/transitions.css";
+
+const ELECTION_RULES_URL = "https://drive.google.com/drive/folders/1srOj0nkSCNG6IuFpA44xreFZswawHaIl?hl=ko";
+const APPLICATION_FORM_URL = null; // set once the Google Form is ready
 
 export default function HomePage() {
   return (
@@ -38,7 +41,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="mt-10 sm:mt-12">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:mt-12">
           <Link
             to="/home"
             className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-semibold text-navy-950 shadow-xl shadow-black/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/90 hover:shadow-2xl active:translate-y-0 sm:px-8 sm:text-base"
@@ -46,6 +49,36 @@ export default function HomePage() {
             Нэр дэвшигчидтэй танилцах
             <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
+
+          <a
+            href={ELECTION_RULES_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white/80 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10 hover:text-white active:translate-y-0 sm:px-7 sm:text-base"
+          >
+            <FileText size={16} />
+            Сонгуулийн журам
+          </a>
+
+          {APPLICATION_FORM_URL ? (
+            <a
+              href={APPLICATION_FORM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white/80 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10 hover:text-white active:translate-y-0 sm:px-7 sm:text-base"
+            >
+              <ClipboardList size={16} />
+              Өргөдлийн маягт
+            </a>
+          ) : (
+            <span
+              className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white/30 sm:px-7 sm:text-base"
+              title="Тун удахгүй"
+            >
+              <ClipboardList size={16} />
+              Өргөдлийн маягт
+            </span>
+          )}
         </div>
       </div>
     </div>
