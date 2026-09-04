@@ -66,8 +66,7 @@ export default function HomeLandingPage() {
             Таны Санал Монгол Оюутнуудын Ирээдүй 
           </h1>
           <p className="mt-4 text-sm leading-relaxed text-navy-900/60 sm:text-base">
-            Нэр дэвшигчдийн мөрийн хөтөлбөртэй танилцаж, сонгуулийн зорилтуудыг судалж, аюулгүйгээр
-            саналаа өгнө үү. 
+            Нэр дэвшигчдийн мөрийн хөтөлбөртэй танилцаж, сонголтоо зөв хийгээрэй
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
