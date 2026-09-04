@@ -4,7 +4,7 @@ import { ArrowRight, FileText, ClipboardList } from "../components/icons";
 import "../styles/transitions.css";
 
 const ELECTION_RULES_URL = "https://drive.google.com/drive/folders/1srOj0nkSCNG6IuFpA44xreFZswawHaIl?hl=ko";
-const APPLICATION_FORM_URL = null; // set once the Google Form is ready
+const APPLICATION_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSerwT2LGy8s9Hy9_e6qLuL_xV-ocQVqCpg_EBdH5PQbR15yRQ/viewform?usp=header";
 
 export default function HomePage() {
   return (
