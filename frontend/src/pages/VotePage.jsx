@@ -321,6 +321,12 @@ export default function VotePage() {
             >
               Нүүр хуудас руу буцах
             </Link>
+            <Link
+              to="/results"
+              className="mt-2 inline-block w-full rounded-lg border border-navy-900/15 py-2.5 text-sm font-semibold text-navy-900 hover:bg-navy-900/5"
+            >
+              Сонгуулийн Үйл Явц
+            </Link>
             <p className="mt-3 text-xs text-navy-900/40">
               Санал хураалт 2026 оны 9-р сарын 15-нд 23:59 цагт хаагдсанаас хойш 24 цагийн дотор үр
               дүнг зарлана.
