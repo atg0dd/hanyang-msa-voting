@@ -22,7 +22,7 @@ export default function HomePage() {
 
       <div className="transition-in relative mx-auto flex max-w-2xl flex-col items-center py-8 text-center sm:py-16">
         <h1 className="font-display text-2xl font-semibold leading-tight sm:text-4xl md:text-5xl">
-          Сонгууль Эхэлхэд
+          Сонгууль Эхлэхэд
         </h1>
         <p className="mt-3 max-w-md text-sm text-white/60 sm:mt-4 sm:text-base">
           2026 оны Ханьян ERICA Монгол Оюутны Холбооны Сонгууль
@@ -57,7 +57,7 @@ export default function HomePage() {
             className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white/80 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10 hover:text-white active:translate-y-0 sm:px-7 sm:text-base"
           >
             <FileText size={16} />
-            Сонгуулийн журам
+            Сонгуулийн журам & маягт
           </a>
 
           {APPLICATION_FORM_URL ? (
@@ -68,7 +68,7 @@ export default function HomePage() {
               className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white/80 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10 hover:text-white active:translate-y-0 sm:px-7 sm:text-base"
             >
               <ClipboardList size={16} />
-              Өргөдлийн маягт
+              Нэр Дэвшигчээр Бүртгүүлэх
             </a>
           ) : (
             <span
@@ -76,7 +76,7 @@ export default function HomePage() {
               title="Тун удахгүй"
             >
               <ClipboardList size={16} />
-              Өргөдлийн маягт
+              Нэр Дэвшигчээр Бүртгүүлэх
             </span>
           )}
         </div>
