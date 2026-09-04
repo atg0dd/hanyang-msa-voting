@@ -24,6 +24,7 @@ export default function CandidateCard({ role, person, accent, slogan }) {
                 src={`${API_BASE_URL}${person.photoUrl}`}
                 alt={person.name}
                 className="h-full w-full object-cover"
+                style={{ objectPosition: `${person.photoPositionX ?? 50}% ${person.photoPositionY ?? 50}%` }}
               />
             ) : (
               <UserPlaceholder size={104} className={`${accent.text} opacity-40`} />

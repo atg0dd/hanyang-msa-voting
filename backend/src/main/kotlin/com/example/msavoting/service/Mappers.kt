@@ -8,4 +8,8 @@ fun CandidateInfo.toResponse(slug: String, role: String) = CandidateResponse(
     dept = dept,
     initials = initials,
     photoUrl = if (photo != null) "/teams/$slug/photo/$role" else null,
+    bio = bio,
+    achievements = achievements,
+    photoPositionX = photoPositionX,
+    photoPositionY = photoPositionY,
 )

@@ -16,6 +16,10 @@ data class PersonRequest(
     val dept: String,
     val photoBase64: String? = null,
     val photoContentType: String? = null,
+    val bio: String? = null,
+    val achievements: String? = null,
+    val photoPositionX: Int? = null,
+    val photoPositionY: Int? = null,
 )
 
 data class PillarRequest(

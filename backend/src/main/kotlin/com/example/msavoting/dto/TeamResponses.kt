@@ -5,6 +5,10 @@ data class CandidateResponse(
     val dept: String,
     val initials: String,
     val photoUrl: String? = null,
+    val bio: String? = null,
+    val achievements: String? = null,
+    val photoPositionX: Int = 50,
+    val photoPositionY: Int = 50,
 )
 
 data class PillarResponse(

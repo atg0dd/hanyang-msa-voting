@@ -33,6 +33,22 @@ class Team(
                         name = "photoContentType",
                         column = Column(name = "president_photo_content_type")
                 ),
+                AttributeOverride(
+                        name = "bio",
+                        column = Column(name = "president_bio")
+                ),
+                AttributeOverride(
+                        name = "achievements",
+                        column = Column(name = "president_achievements")
+                ),
+                AttributeOverride(
+                        name = "photoPositionX",
+                        column = Column(name = "president_photo_position_x", nullable = false)
+                ),
+                AttributeOverride(
+                        name = "photoPositionY",
+                        column = Column(name = "president_photo_position_y", nullable = false)
+                ),
         )
         var president: CandidateInfo,
         @Embedded
@@ -56,6 +72,22 @@ class Team(
                 AttributeOverride(
                         name = "photoContentType",
                         column = Column(name = "vp_photo_content_type")
+                ),
+                AttributeOverride(
+                        name = "bio",
+                        column = Column(name = "vp_bio")
+                ),
+                AttributeOverride(
+                        name = "achievements",
+                        column = Column(name = "vp_achievements")
+                ),
+                AttributeOverride(
+                        name = "photoPositionX",
+                        column = Column(name = "vp_photo_position_x", nullable = false)
+                ),
+                AttributeOverride(
+                        name = "photoPositionY",
+                        column = Column(name = "vp_photo_position_y", nullable = false)
                 ),
         )
         var vp: CandidateInfo,

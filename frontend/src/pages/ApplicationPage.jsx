@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Plus, X, Upload } from "../components/icons";
 import Stepper from "../components/Stepper";
@@ -9,9 +9,32 @@ const steps = ["President", "Vice President", "Vision & Platform", "Review"];
 const MAX_PHOTO_BYTES = 2 * 1024 * 1024; // 2MB, must match the backend limit
 const ALLOWED_PHOTO_TYPES = ["image/jpeg", "image/png"];
 
-const emptyPerson = { name: "", dept: "", photoName: "", photoBase64: "", photoContentType: "" };
+const emptyPerson = {
+  name: "",
+  dept: "",
+  bio: "",
+  achievements: "",
+  photoName: "",
+  photoBase64: "",
+  photoContentType: "",
+  photoPositionX: 50,
+  photoPositionY: 50,
+};
 const emptyPillar = { icon: "", title: "", desc: "" };
 const emptyInitiative = { headline: "", detail: "" };
+
+function toPersonPayload(person) {
+  return {
+    name: person.name,
+    dept: person.dept,
+    bio: person.bio,
+    achievements: person.achievements,
+    photoBase64: person.photoBase64,
+    photoContentType: person.photoContentType,
+    photoPositionX: person.photoPositionX,
+    photoPositionY: person.photoPositionY,
+  };
+}
 
 const accents = [
   { value: "blue", label: "Blue", swatch: "bg-blue-500" },
@@ -35,6 +58,56 @@ function Field({ label, placeholder, value, onChange, type = "text" }) {
   );
 }
 
+// Drag-to-reposition preview: matches the aspect ratio of the real photo area
+// on CandidateCard so what the admin sees here is what voters will see.
+function PhotoPositioner({ src, x, y, onChange }) {
+  const frameRef = useRef(null);
+  const dragging = useRef(false);
+  const last = useRef({ x: 0, y: 0 });
+
+  function handlePointerDown(e) {
+    dragging.current = true;
+    last.current = { x: e.clientX, y: e.clientY };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }
+  function handlePointerMove(e) {
+    if (!dragging.current || !frameRef.current) return;
+    const rect = frameRef.current.getBoundingClientRect();
+    const dx = e.clientX - last.current.x;
+    const dy = e.clientY - last.current.y;
+    last.current = { x: e.clientX, y: e.clientY };
+    const nextX = Math.min(100, Math.max(0, x - (dx / rect.width) * 150));
+    const nextY = Math.min(100, Math.max(0, y - (dy / rect.height) * 150));
+    onChange(nextX, nextY);
+  }
+  function handlePointerUp(e) {
+    dragging.current = false;
+    e.currentTarget.releasePointerCapture?.(e.pointerId);
+  }
+
+  return (
+    <div className="mt-3">
+      <div
+        ref={frameRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        className="relative h-44 w-full touch-none select-none overflow-hidden rounded-lg bg-navy-900/5"
+        style={{ cursor: dragging.current ? "grabbing" : "grab" }}
+      >
+        <img
+          src={src}
+          alt=""
+          draggable={false}
+          className="h-full w-full object-cover"
+          style={{ objectPosition: `${x}% ${y}%` }}
+        />
+      </div>
+      <p className="mt-1.5 text-xs text-navy-900/40">Зургийг чирж байрлуулна уу — энэ бол картан дээр харагдах хэлбэр.</p>
+    </div>
+  );
+}
+
 function PersonForm({ role, person, setPerson }) {
   const [photoError, setPhotoError] = useState("");
 
@@ -52,7 +125,14 @@ function PersonForm({ role, person, setPerson }) {
     setPhotoError("");
     const reader = new FileReader();
     reader.onload = () => {
-      setPerson({ ...person, photoName: file.name, photoBase64: reader.result, photoContentType: file.type });
+      setPerson({
+        ...person,
+        photoName: file.name,
+        photoBase64: reader.result,
+        photoContentType: file.type,
+        photoPositionX: 50,
+        photoPositionY: 50,
+      });
     };
     reader.readAsDataURL(file);
   }
@@ -71,7 +151,12 @@ function PersonForm({ role, person, setPerson }) {
         <div className="flex flex-col items-start gap-3 rounded-lg border border-dashed border-navy-900/20 p-4 sm:flex-row sm:items-center sm:gap-4">
           <div className="flex w-full items-center gap-3 sm:w-auto">
             {person.photoBase64 ? (
-              <img src={person.photoBase64} alt="" className="h-12 w-12 shrink-0 rounded-full object-cover" />
+              <img
+                src={person.photoBase64}
+                alt=""
+                className="h-12 w-12 shrink-0 rounded-full object-cover"
+                style={{ objectPosition: `${person.photoPositionX ?? 50}% ${person.photoPositionY ?? 50}%` }}
+              />
             ) : (
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-navy-900/5 text-navy-900/30">
                 <Upload size={18} />
@@ -101,6 +186,14 @@ function PersonForm({ role, person, setPerson }) {
           </label>
           {photoError && <p className="text-xs text-red-600">{photoError}</p>}
         </div>
+        {person.photoBase64 && (
+          <PhotoPositioner
+            src={person.photoBase64}
+            x={person.photoPositionX ?? 50}
+            y={person.photoPositionY ?? 50}
+            onChange={(nx, ny) => setPerson({ ...person, photoPositionX: nx, photoPositionY: ny })}
+          />
+        )}
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -115,6 +208,28 @@ function PersonForm({ role, person, setPerson }) {
           placeholder="e.g. Computer Science"
           value={person.dept}
           onChange={(v) => setPerson({ ...person, dept: v })}
+        />
+      </div>
+
+      <div className="mt-4">
+        <label className="mb-1.5 block text-xs font-semibold text-navy-900/60">Товч намтар</label>
+        <textarea
+          rows={3}
+          value={person.bio}
+          onChange={(e) => setPerson({ ...person, bio: e.target.value })}
+          placeholder="Богино танилцуулга бичнэ үү…"
+          className="w-full rounded-lg border border-navy-900/15 px-3.5 py-2.5 text-sm outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+        />
+      </div>
+
+      <div className="mt-4">
+        <label className="mb-1.5 block text-xs font-semibold text-navy-900/60">Амжилт, ололт</label>
+        <textarea
+          rows={3}
+          value={person.achievements}
+          onChange={(e) => setPerson({ ...person, achievements: e.target.value })}
+          placeholder="Онцлох амжилт, ололтоо бичнэ үү…"
+          className="w-full rounded-lg border border-navy-900/15 px-3.5 py-2.5 text-sm outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
         />
       </div>
     </div>
@@ -155,8 +270,8 @@ export default function ApplicationPage() {
         slogan,
         accent,
         vision,
-        president: { name: president.name, dept: president.dept, photoBase64: president.photoBase64, photoContentType: president.photoContentType },
-        vp: { name: vp.name, dept: vp.dept, photoBase64: vp.photoBase64, photoContentType: vp.photoContentType },
+        president: toPersonPayload(president),
+        vp: toPersonPayload(vp),
         pillars: pillars.filter((p) => p.title.trim()),
         initiatives: initiatives.filter((i) => i.headline.trim()),
       });

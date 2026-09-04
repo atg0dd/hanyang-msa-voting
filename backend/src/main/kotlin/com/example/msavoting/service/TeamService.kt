@@ -103,11 +103,19 @@ class TeamService(
                 name = request.president.name.trim(),
                 dept = request.president.dept.trim(),
                 initials = generateInitials(request.president.name),
+                bio = request.president.bio?.trim()?.ifBlank { null },
+                achievements = request.president.achievements?.trim()?.ifBlank { null },
+                photoPositionX = clampPosition(request.president.photoPositionX),
+                photoPositionY = clampPosition(request.president.photoPositionY),
             ).also { decodePhotoInto(it, request.president.photoBase64, request.president.photoContentType) },
             vp = CandidateInfo(
                 name = request.vp.name.trim(),
                 dept = request.vp.dept.trim(),
                 initials = generateInitials(request.vp.name),
+                bio = request.vp.bio?.trim()?.ifBlank { null },
+                achievements = request.vp.achievements?.trim()?.ifBlank { null },
+                photoPositionX = clampPosition(request.vp.photoPositionX),
+                photoPositionY = clampPosition(request.vp.photoPositionY),
             ).also { decodePhotoInto(it, request.vp.photoBase64, request.vp.photoContentType) },
             vision = request.vision.trim(),
         )
@@ -162,6 +170,8 @@ class TeamService(
         candidate.photo = bytes
         candidate.photoContentType = contentType
     }
+
+    private fun clampPosition(value: Int?): Int = (value ?: 50).coerceIn(0, 100)
 
     private fun generateInitials(name: String): String {
         val parts = name.trim().split(Regex("\\s+")).filter { it.isNotBlank() }
