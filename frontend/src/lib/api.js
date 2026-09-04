@@ -62,3 +62,9 @@ export function createTeam(payload) {
   });
 }
 
+export function deleteTeam(teamId) {
+  return request(`/teams/${teamId}`, {
+    method: "DELETE",
+  });
+}
+

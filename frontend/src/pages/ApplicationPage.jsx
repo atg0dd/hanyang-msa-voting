@@ -191,7 +191,12 @@ export default function ApplicationPage() {
             <ArrowLeft size={16} />
             Add Team
           </Link>
-          <span className="font-semibold text-navy-900">Step {step} of 4</span>
+          <div className="flex items-center gap-4">
+            <span className="font-semibold text-navy-900">Step {step} of 4</span>
+            <Link to="/manage" className="text-xs font-semibold text-navy-900/40 hover:text-navy-900">
+              Manage teams
+            </Link>
+          </div>
         </div>
       </div>
 

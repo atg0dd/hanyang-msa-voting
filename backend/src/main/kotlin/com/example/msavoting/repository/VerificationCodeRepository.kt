@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface VerificationCodeRepository : JpaRepository<VerificationCode, Long> {
     fun findByEmailHash(emailHash: String): VerificationCode?
     fun deleteByEmailHash(emailHash: String)
+    fun deleteByTeamId(teamId: Long)
 }

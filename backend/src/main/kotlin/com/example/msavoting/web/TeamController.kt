@@ -7,6 +7,7 @@ import com.example.msavoting.service.TeamService
 import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,6 +28,12 @@ class TeamController(private val teamService: TeamService) {
 
     @PostMapping
     fun create(@RequestBody request: CreateTeamRequest): TeamDetailResponse = teamService.createTeam(request)
+
+    @DeleteMapping("/{slug}")
+    fun delete(@PathVariable slug: String): ResponseEntity<Void> {
+        teamService.deleteTeam(slug)
+        return ResponseEntity.noContent().build()
+    }
 
     @GetMapping("/{slug}/photo/{role}")
     fun getPhoto(@PathVariable slug: String, @PathVariable role: String): ResponseEntity<ByteArray> {

@@ -13,6 +13,7 @@ import com.example.msavoting.exception.InvalidTeamDataException
 import com.example.msavoting.exception.PhotoNotFoundException
 import com.example.msavoting.exception.TeamNotFoundException
 import com.example.msavoting.repository.TeamRepository
+import com.example.msavoting.repository.VerificationCodeRepository
 import com.example.msavoting.repository.VoteRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -27,6 +28,7 @@ private const val MAX_PHOTO_BYTES = 2 * 1024 * 1024 // 2MB
 class TeamService(
     private val teamRepository: TeamRepository,
     private val voteRepository: VoteRepository,
+    private val verificationCodeRepository: VerificationCodeRepository,
 ) {
     fun listSummaries(): List<TeamSummaryResponse> {
         val voteCounts = voteRepository.countGroupedByTeam().associate { it.teamId to it.voteCount }
@@ -118,6 +120,14 @@ class TeamService(
 
         val saved = teamRepository.save(team)
         return toDetail(saved, votes = 0L)
+    }
+
+    @Transactional
+    fun deleteTeam(slug: String) {
+        val team = teamRepository.findBySlug(slug) ?: throw TeamNotFoundException(slug)
+        voteRepository.deleteByTeamId(team.id!!)
+        verificationCodeRepository.deleteByTeamId(team.id!!)
+        teamRepository.delete(team)
     }
 
     private fun generateSlug(name: String): String {
