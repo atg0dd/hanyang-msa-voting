@@ -1,5 +1,24 @@
 import { Link } from "react-router-dom";
 import { accentMap } from "../data/teams";
+import { API_BASE_URL } from "../lib/api";
+
+function CandidateAvatar({ person, accent }) {
+  if (person.photoUrl) {
+    return (
+      <img
+        src={`${API_BASE_URL}${person.photoUrl}`}
+        alt={person.name}
+        className="h-11 w-11 shrink-0 rounded-full object-cover"
+        style={{ objectPosition: `${person.photoPositionX ?? 50}% ${person.photoPositionY ?? 50}%` }}
+      />
+    );
+  }
+  return (
+    <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${accent.soft} ${accent.text}`}>
+      {person.initials}
+    </div>
+  );
+}
 
 export default function TeamCard({ team }) {
   const accent = accentMap[team.accent];
@@ -13,9 +32,7 @@ export default function TeamCard({ team }) {
         </span>
 
         <div className="mb-4 flex items-center gap-3">
-          <div className={`flex h-11 w-11 items-center justify-center rounded-full text-sm font-semibold ${accent.soft} ${accent.text}`}>
-            {team.president.initials}
-          </div>
+          <CandidateAvatar person={team.president} accent={accent} />
           <div>
             <p className="text-sm font-semibold text-navy-900">{team.president.name}</p>
             <p className="text-xs text-navy-900/50">Ерөнхийлөгч · {team.president.dept}</p>
@@ -23,9 +40,7 @@ export default function TeamCard({ team }) {
         </div>
 
         <div className="mb-5 flex items-center gap-3">
-          <div className={`flex h-11 w-11 items-center justify-center rounded-full text-sm font-semibold ${accent.soft} ${accent.text}`}>
-            {team.vp.initials}
-          </div>
+          <CandidateAvatar person={team.vp} accent={accent} />
           <div>
             <p className="text-sm font-semibold text-navy-900">{team.vp.name}</p>
             <p className="text-xs text-navy-900/50">Дэд ерөнхийлөгч · {team.vp.dept}</p>

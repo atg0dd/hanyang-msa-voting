@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { ShieldCheck, IdCard, ArrowRight, UserPlaceholder } from "./icons";
+import { ShieldCheck, ArrowRight, UserPlaceholder } from "./icons";
 import { API_BASE_URL } from "../lib/api";
 
-export default function CandidateCard({ role, person, accent, slogan }) {
+export default function CandidateCard({ role, person, accent }) {
   const [flipped, setFlipped] = useState(false);
 
   return (
@@ -15,7 +15,7 @@ export default function CandidateCard({ role, person, accent, slogan }) {
       <div className="flip-card-inner">
         {/* Front */}
         <div className="flip-card-face flex flex-col overflow-hidden rounded-2xl border border-navy-900/5 bg-white shadow-card">
-          <div className={`relative flex h-72 shrink-0 items-center justify-center overflow-hidden ${accent.soft}`}>
+          <div className={`relative flex h-96 shrink-0 items-center justify-center overflow-hidden ${accent.soft}`}>
             <span className="absolute left-3 top-3 rounded-full bg-white/85 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-navy-900/60 backdrop-blur">
               {role}
             </span>
@@ -36,21 +36,14 @@ export default function CandidateCard({ role, person, accent, slogan }) {
             </div>
           </div>
 
-          <div className="flex flex-1 flex-col p-4 pt-6">
+          <div className="flex flex-1 flex-col p-4 pt-5">
             <div className="flex items-center gap-1.5">
               <p className="font-semibold text-navy-900">{person.name}</p>
               <ShieldCheck size={15} className={accent.text} />
             </div>
             <p className="mt-1 text-sm leading-snug text-navy-900/50">{person.dept}</p>
-            {slogan && (
-              <p className="mt-2 line-clamp-2 text-xs italic leading-snug text-navy-900/40">"{slogan}"</p>
-            )}
 
-            <div className="mt-auto flex items-center justify-between pt-4">
-              <span className="flex items-center gap-1 text-xs text-navy-900/40">
-                <IdCard size={14} />
-                {person.studentId}
-              </span>
+            <div className="mt-auto flex items-center justify-end pt-3">
               <span className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold text-white ${accent.solid}`}>
                 Дэлгэрэнгүй
                 <ArrowRight size={12} />
