@@ -90,7 +90,6 @@ class TeamService(
         if (request.vp.name.isBlank() || request.vp.dept.isBlank()) {
             throw InvalidTeamDataException("VP name and department are required.")
         }
-        if (request.pillars.isEmpty()) throw InvalidTeamDataException("At least one pillar is required.")
 
         val team = Team(
             slug = generateSlug(request.name),

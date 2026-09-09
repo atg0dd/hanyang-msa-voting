@@ -7,7 +7,7 @@ data class CreateTeamRequest(
     val vision: String? = null,
     val president: PersonRequest,
     val vp: PersonRequest,
-    val pillars: List<PillarRequest>,
+    val pillars: List<PillarRequest> = emptyList(),
     val initiatives: List<InitiativeRequest> = emptyList(),
 )
 

@@ -1,5 +1,5 @@
 import { Link, useParams, Navigate } from "react-router-dom";
-import { ArrowLeft } from "../components/icons";
+import { ArrowLeft, Check } from "../components/icons";
 import Reveal from "../components/Reveal";
 import CandidateCard from "../components/CandidateCard";
 import { accentMap } from "../data/teams";
@@ -51,22 +51,26 @@ export default function ManifestoPage() {
             <p className="mt-1.5 text-sm text-navy-900/50">Дэлгэрэнгүй мэдээлэл үзэхийн тулд картыг товшино уу</p>
           </div>
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <CandidateCard role="Ерөнхийлөгч" person={team.president} accent={accent} slogan={team.slogan} />
-            <CandidateCard role="Дэд ерөнхийлөгч" person={team.vp} accent={accent} slogan={team.slogan} />
+            <CandidateCard role="Ерөнхийлөгч" person={team.president} accent={accent} />
+            <CandidateCard role="Дэд ерөнхийлөгч" person={team.vp} accent={accent} />
           </div>
         </Reveal>
 
-        {/* Platform pillars */}
+        {/* Key initiatives */}
         <Reveal className="mt-16">
-          <h2 className="mb-5 font-display text-xl font-semibold text-navy-900 sm:text-2xl">
-            Мөрийн хөтөлбөрийн тулгуур зарчим
+          <h2 className="mb-4 font-display text-xl font-semibold text-navy-900 sm:text-2xl">
+            Гол санаачилгууд
           </h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {team.pillars.map((p) => (
-              <div key={p.title} className="rounded-xl bg-slate-50 p-5 transition-colors duration-300 hover:bg-slate-100">
-                <span className="text-xl">{p.icon}</span>
-                <h3 className="mt-3 text-sm font-semibold text-navy-900">{p.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-navy-900/60">{p.desc}</p>
+          <div className="divide-y divide-navy-900/10">
+            {team.initiatives.map((init) => (
+              <div key={init.headline} className="flex gap-3 py-4 first:pt-0">
+                <span className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ring-2 ${accent.ring} ${accent.text}`}>
+                  <Check size={13} />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold text-navy-900">{init.headline}</p>
+                  <p className="mt-0.5 text-sm text-navy-900/60">{init.detail}</p>
+                </div>
               </div>
             ))}
           </div>

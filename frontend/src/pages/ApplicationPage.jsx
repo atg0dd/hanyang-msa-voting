@@ -20,7 +20,7 @@ const emptyPerson = {
   photoPositionX: 50,
   photoPositionY: 50,
 };
-const emptyPillar = { icon: "", title: "", desc: "" };
+const emptyInitiative = { headline: "", detail: "" };
 
 function toPersonPayload(person) {
   return {
@@ -242,7 +242,7 @@ export default function ApplicationPage() {
   const [president, setPresident] = useState(emptyPerson);
   const [vp, setVp] = useState(emptyPerson);
   const [slogan, setSlogan] = useState("");
-  const [pillars, setPillars] = useState([{ ...emptyPillar }]);
+  const [initiatives, setInitiatives] = useState([{ ...emptyInitiative }]);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [createdTeam, setCreatedTeam] = useState(null);
@@ -266,7 +266,7 @@ export default function ApplicationPage() {
         accent,
         president: toPersonPayload(president),
         vp: toPersonPayload(vp),
-        pillars: pillars.filter((p) => p.title.trim()),
+        initiatives: initiatives.filter((i) => i.headline.trim()),
       });
       setCreatedTeam(team);
     } catch (err) {
@@ -390,60 +390,46 @@ export default function ApplicationPage() {
               </div>
 
               <div className="mt-8">
-                <label className="mb-1.5 block text-xs font-semibold text-navy-900/60">Platform Pillars</label>
+                <label className="mb-1.5 block text-xs font-semibold text-navy-900/60">Key Initiatives</label>
                 <p className="mb-3 text-xs text-navy-900/40">
-                  2–4 core themes. Each gets a card on your manifesto page.
+                  Specific, actionable commitments. Each appears as a checklist item on your manifesto.
                 </p>
-                <div className="space-y-4">
-                  {pillars.map((p, i) => (
+                <div className="space-y-3">
+                  {initiatives.map((it, i) => (
                     <div key={i} className="relative rounded-lg border border-navy-900/10 p-4">
-                      {pillars.length > 1 && (
+                      {initiatives.length > 1 && (
                         <button
-                          onClick={() => setPillars(pillars.filter((_, idx) => idx !== i))}
+                          onClick={() => setInitiatives(initiatives.filter((_, idx) => idx !== i))}
                           className="absolute right-3 top-3 text-navy-900/30 transition-colors duration-200 hover:text-navy-900"
                         >
                           <X size={15} />
                         </button>
                       )}
-                      <p className="mb-3 text-xs font-semibold text-navy-900/50">Pillar {i + 1}</p>
-                      <div className="grid gap-3 sm:grid-cols-[80px_1fr]">
-                        <input
-                          value={p.icon}
-                          onChange={(e) =>
-                            setPillars(pillars.map((pl, idx) => (idx === i ? { ...pl, icon: e.target.value } : pl)))
-                          }
-                          placeholder="💡"
-                          className="rounded-lg border border-navy-900/15 px-3 py-2 text-center text-sm outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                        />
-                        <input
-                          value={p.title}
-                          onChange={(e) =>
-                            setPillars(pillars.map((pl, idx) => (idx === i ? { ...pl, title: e.target.value } : pl)))
-                          }
-                          placeholder="e.g. Digital Campus Hub"
-                          className="rounded-lg border border-navy-900/15 px-3 py-2 text-sm outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                        />
-                      </div>
-                      <textarea
-                        rows={2}
-                        value={p.desc}
+                      <input
+                        value={it.headline}
                         onChange={(e) =>
-                          setPillars(pillars.map((pl, idx) => (idx === i ? { ...pl, desc: e.target.value } : pl)))
+                          setInitiatives(initiatives.map((x, idx) => (idx === i ? { ...x, headline: e.target.value } : x)))
                         }
-                        placeholder="Describe this pillar in 1–2 sentences…"
-                        className="mt-3 w-full rounded-lg border border-navy-900/15 px-3 py-2 text-sm outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                        placeholder={`${i + 1}. Initiative headline`}
+                        className="w-full rounded-lg border border-navy-900/15 px-3 py-2 text-sm font-medium outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                      />
+                      <input
+                        value={it.detail}
+                        onChange={(e) =>
+                          setInitiatives(initiatives.map((x, idx) => (idx === i ? { ...x, detail: e.target.value } : x)))
+                        }
+                        placeholder="Supporting detail — how will you achieve this?"
+                        className="mt-2 w-full rounded-lg border border-navy-900/15 px-3 py-2 text-sm outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                       />
                     </div>
                   ))}
                 </div>
-                {pillars.length < 4 && (
-                  <button
-                    onClick={() => setPillars([...pillars, { ...emptyPillar }])}
-                    className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600 transition-colors duration-200 hover:underline"
-                  >
-                    <Plus size={14} /> Add
-                  </button>
-                )}
+                <button
+                  onClick={() => setInitiatives([...initiatives, { ...emptyInitiative }])}
+                  className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600 transition-colors duration-200 hover:underline"
+                >
+                  <Plus size={14} /> Add
+                </button>
               </div>
             </div>
           )}
@@ -477,9 +463,9 @@ export default function ApplicationPage() {
                   <p className="mt-1 italic text-navy-900">{slogan || "—"}</p>
                 </div>
                 <div className="rounded-lg border border-navy-900/10 p-4">
-                  <p className="text-xs font-semibold text-navy-900/40">Platform Pillars</p>
+                  <p className="text-xs font-semibold text-navy-900/40">Key Initiatives</p>
                   <p className="mt-1 text-navy-900/80">
-                    {pillars.filter((p) => p.title).map((p) => p.title).join(", ") || "—"}
+                    {initiatives.filter((i) => i.headline).length} initiative(s) added
                   </p>
                 </div>
               </div>
