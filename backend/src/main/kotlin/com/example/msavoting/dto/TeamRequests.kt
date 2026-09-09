@@ -4,11 +4,11 @@ data class CreateTeamRequest(
     val name: String,
     val slogan: String,
     val accent: String,
-    val vision: String,
+    val vision: String? = null,
     val president: PersonRequest,
     val vp: PersonRequest,
     val pillars: List<PillarRequest>,
-    val initiatives: List<InitiativeRequest>,
+    val initiatives: List<InitiativeRequest> = emptyList(),
 )
 
 data class PersonRequest(

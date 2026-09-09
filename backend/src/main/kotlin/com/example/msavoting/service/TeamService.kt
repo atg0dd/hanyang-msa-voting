@@ -84,7 +84,6 @@ class TeamService(
         }
         if (request.name.isBlank()) throw InvalidTeamDataException("Team name is required.")
         if (request.slogan.isBlank()) throw InvalidTeamDataException("Slogan is required.")
-        if (request.vision.isBlank()) throw InvalidTeamDataException("Vision is required.")
         if (request.president.name.isBlank() || request.president.dept.isBlank()) {
             throw InvalidTeamDataException("President name and department are required.")
         }
@@ -92,7 +91,6 @@ class TeamService(
             throw InvalidTeamDataException("VP name and department are required.")
         }
         if (request.pillars.isEmpty()) throw InvalidTeamDataException("At least one pillar is required.")
-        if (request.initiatives.isEmpty()) throw InvalidTeamDataException("At least one initiative is required.")
 
         val team = Team(
             slug = generateSlug(request.name),
@@ -117,7 +115,7 @@ class TeamService(
                 photoPositionX = clampPosition(request.vp.photoPositionX),
                 photoPositionY = clampPosition(request.vp.photoPositionY),
             ).also { decodePhotoInto(it, request.vp.photoBase64, request.vp.photoContentType) },
-            vision = request.vision.trim(),
+            vision = request.vision?.trim().orEmpty(),
         )
         request.pillars.forEachIndexed { index, p ->
             team.pillars.add(Pillar(team = team, icon = p.icon.trim(), title = p.title.trim(), description = p.desc.trim(), sortOrder = index + 1))

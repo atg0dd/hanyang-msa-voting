@@ -1,5 +1,5 @@
 import { Link, useParams, Navigate } from "react-router-dom";
-import { ArrowLeft, Check } from "../components/icons";
+import { ArrowLeft } from "../components/icons";
 import Reveal from "../components/Reveal";
 import CandidateCard from "../components/CandidateCard";
 import { accentMap } from "../data/teams";
@@ -56,20 +56,6 @@ export default function ManifestoPage() {
           </div>
         </Reveal>
 
-        {/* Vision */}
-        <Reveal className="mx-auto mt-16 max-w-2xl text-center">
-          <div className="flex items-center justify-center gap-4">
-            <span className="h-px flex-1 bg-navy-900/10" />
-            <h2 className="shrink-0 text-xs font-semibold uppercase tracking-[0.2em] text-navy-900/40">
-              Бидний Алсын Хараа
-            </h2>
-            <span className="h-px flex-1 bg-navy-900/10" />
-          </div>
-          <p className="mt-6 text-xl italic leading-relaxed text-navy-900/80 sm:text-2xl">
-            {team.vision}
-          </p>
-        </Reveal>
-
         {/* Platform pillars */}
         <Reveal className="mt-16">
           <h2 className="mb-5 font-display text-xl font-semibold text-navy-900 sm:text-2xl">
@@ -81,26 +67,6 @@ export default function ManifestoPage() {
                 <span className="text-xl">{p.icon}</span>
                 <h3 className="mt-3 text-sm font-semibold text-navy-900">{p.title}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-navy-900/60">{p.desc}</p>
-              </div>
-            ))}
-          </div>
-        </Reveal>
-
-        {/* Key initiatives */}
-        <Reveal className="mt-16" delay={100}>
-          <h2 className="mb-4 font-display text-xl font-semibold text-navy-900 sm:text-2xl">
-            Гол санаачилгууд
-          </h2>
-          <div className="divide-y divide-navy-900/10">
-            {team.initiatives.map((init) => (
-              <div key={init.headline} className="flex gap-3 py-4 first:pt-0">
-                <span className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ring-2 ${accent.ring} ${accent.text}`}>
-                  <Check size={13} />
-                </span>
-                <div>
-                  <p className="text-sm font-semibold text-navy-900">{init.headline}</p>
-                  <p className="mt-0.5 text-sm text-navy-900/60">{init.detail}</p>
-                </div>
               </div>
             ))}
           </div>
