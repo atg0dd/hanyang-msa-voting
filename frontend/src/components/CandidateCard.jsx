@@ -10,12 +10,12 @@ export default function CandidateCard({ role, person, accent, slogan }) {
       type="button"
       onClick={() => setFlipped((f) => !f)}
       aria-pressed={flipped}
-      className={`flip-card h-96 w-full text-left ${flipped ? "is-flipped" : ""}`}
+      className={`flip-card h-[32rem] w-full text-left ${flipped ? "is-flipped" : ""}`}
     >
       <div className="flip-card-inner">
         {/* Front */}
         <div className="flip-card-face flex flex-col overflow-hidden rounded-2xl border border-navy-900/5 bg-white shadow-card">
-          <div className={`relative flex h-44 shrink-0 items-center justify-center overflow-hidden ${accent.soft}`}>
+          <div className={`relative flex h-72 shrink-0 items-center justify-center overflow-hidden ${accent.soft}`}>
             <span className="absolute left-3 top-3 rounded-full bg-white/85 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-navy-900/60 backdrop-blur">
               {role}
             </span>

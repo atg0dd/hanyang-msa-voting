@@ -4,7 +4,7 @@ import { ArrowLeft, Plus, X, Upload } from "../components/icons";
 import Stepper from "../components/Stepper";
 import { createTeam } from "../lib/api";
 
-const steps = ["President", "Vice President", "Vision & Platform", "Review"];
+const steps = ["President", "Vice President", "Platform", "Review"];
 
 const MAX_PHOTO_BYTES = 2 * 1024 * 1024; // 2MB, must match the backend limit
 const ALLOWED_PHOTO_TYPES = ["image/jpeg", "image/png"];
@@ -21,7 +21,6 @@ const emptyPerson = {
   photoPositionY: 50,
 };
 const emptyPillar = { icon: "", title: "", desc: "" };
-const emptyInitiative = { headline: "", detail: "" };
 
 function toPersonPayload(person) {
   return {
@@ -92,7 +91,7 @@ function PhotoPositioner({ src, x, y, onChange }) {
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        className="relative h-44 w-full touch-none select-none overflow-hidden rounded-lg bg-navy-900/5"
+        className="relative h-72 w-full touch-none select-none overflow-hidden rounded-lg bg-navy-900/5"
         style={{ cursor: dragging.current ? "grabbing" : "grab" }}
       >
         <img
@@ -243,14 +242,10 @@ export default function ApplicationPage() {
   const [president, setPresident] = useState(emptyPerson);
   const [vp, setVp] = useState(emptyPerson);
   const [slogan, setSlogan] = useState("");
-  const [vision, setVision] = useState("");
   const [pillars, setPillars] = useState([{ ...emptyPillar }]);
-  const [initiatives, setInitiatives] = useState([{ ...emptyInitiative }]);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [createdTeam, setCreatedTeam] = useState(null);
-
-  const visionWords = vision.trim() ? vision.trim().split(/\s+/).length : 0;
 
   function next() {
     setStep((s) => Math.min(s + 1, 4));
@@ -269,11 +264,9 @@ export default function ApplicationPage() {
         name: teamName,
         slogan,
         accent,
-        vision,
         president: toPersonPayload(president),
         vp: toPersonPayload(vp),
         pillars: pillars.filter((p) => p.title.trim()),
-        initiatives: initiatives.filter((i) => i.headline.trim()),
       });
       setCreatedTeam(team);
     } catch (err) {
@@ -376,7 +369,7 @@ export default function ApplicationPage() {
 
           {step === 3 && (
             <div>
-              <h1 className="font-display text-lg font-semibold text-navy-900">Vision &amp; Platform</h1>
+              <h1 className="font-display text-lg font-semibold text-navy-900">Platform</h1>
               <p className="mt-1.5 text-sm text-navy-900/60">
                 What does your team stand for? This content powers your manifesto page.
               </p>
@@ -394,21 +387,6 @@ export default function ApplicationPage() {
                   className="w-full rounded-lg border border-navy-900/15 px-3.5 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 />
                 <p className="mt-1 text-right text-xs text-navy-900/30">{slogan.length}/80</p>
-              </div>
-
-              <div className="mt-6">
-                <label className="mb-1.5 block text-xs font-semibold text-navy-900/60">Our Vision</label>
-                <p className="mb-1.5 text-xs text-navy-900/40">
-                  2–4 sentences about what your team stands for. This is the first thing voters read on your manifesto.
-                </p>
-                <textarea
-                  rows={4}
-                  value={vision}
-                  onChange={(e) => setVision(e.target.value)}
-                  placeholder="Write your team's vision statement…"
-                  className="w-full rounded-lg border border-navy-900/15 px-3.5 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                />
-                <p className="mt-1 text-xs text-navy-900/30">{visionWords} words — aim for 40–80</p>
               </div>
 
               <div className="mt-8">
@@ -467,49 +445,6 @@ export default function ApplicationPage() {
                   </button>
                 )}
               </div>
-
-              <div className="mt-8">
-                <label className="mb-1.5 block text-xs font-semibold text-navy-900/60">Key Initiatives</label>
-                <p className="mb-3 text-xs text-navy-900/40">
-                  Specific, actionable commitments. Each appears as a checklist item on your manifesto.
-                </p>
-                <div className="space-y-3">
-                  {initiatives.map((it, i) => (
-                    <div key={i} className="relative rounded-lg border border-navy-900/10 p-4">
-                      {initiatives.length > 1 && (
-                        <button
-                          onClick={() => setInitiatives(initiatives.filter((_, idx) => idx !== i))}
-                          className="absolute right-3 top-3 text-navy-900/30 transition-colors duration-200 hover:text-navy-900"
-                        >
-                          <X size={15} />
-                        </button>
-                      )}
-                      <input
-                        value={it.headline}
-                        onChange={(e) =>
-                          setInitiatives(initiatives.map((x, idx) => (idx === i ? { ...x, headline: e.target.value } : x)))
-                        }
-                        placeholder={`${i + 1}. Initiative headline`}
-                        className="w-full rounded-lg border border-navy-900/15 px-3 py-2 text-sm font-medium outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                      />
-                      <input
-                        value={it.detail}
-                        onChange={(e) =>
-                          setInitiatives(initiatives.map((x, idx) => (idx === i ? { ...x, detail: e.target.value } : x)))
-                        }
-                        placeholder="Supporting detail — how will you achieve this?"
-                        className="mt-2 w-full rounded-lg border border-navy-900/15 px-3 py-2 text-sm outline-none transition-colors duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                      />
-                    </div>
-                  ))}
-                </div>
-                <button
-                  onClick={() => setInitiatives([...initiatives, { ...emptyInitiative }])}
-                  className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600 transition-colors duration-200 hover:underline"
-                >
-                  <Plus size={14} /> Add
-                </button>
-              </div>
             </div>
           )}
 
@@ -542,19 +477,9 @@ export default function ApplicationPage() {
                   <p className="mt-1 italic text-navy-900">{slogan || "—"}</p>
                 </div>
                 <div className="rounded-lg border border-navy-900/10 p-4">
-                  <p className="text-xs font-semibold text-navy-900/40">Vision</p>
-                  <p className="mt-1 text-navy-900/80">{vision || "—"}</p>
-                </div>
-                <div className="rounded-lg border border-navy-900/10 p-4">
                   <p className="text-xs font-semibold text-navy-900/40">Platform Pillars</p>
                   <p className="mt-1 text-navy-900/80">
                     {pillars.filter((p) => p.title).map((p) => p.title).join(", ") || "—"}
-                  </p>
-                </div>
-                <div className="rounded-lg border border-navy-900/10 p-4">
-                  <p className="text-xs font-semibold text-navy-900/40">Key Initiatives</p>
-                  <p className="mt-1 text-navy-900/80">
-                    {initiatives.filter((i) => i.headline).length} initiative(s) added
                   </p>
                 </div>
               </div>
