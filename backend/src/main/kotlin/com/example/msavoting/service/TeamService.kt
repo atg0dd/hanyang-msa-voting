@@ -32,7 +32,17 @@ class TeamService(
 ) {
     fun listSummaries(): List<TeamSummaryResponse> {
         val voteCounts = voteRepository.countGroupedByTeam().associate { it.teamId to it.voteCount }
-        return teamRepository.findAll().map { team -> toSummary(team, voteCounts[team.id] ?: 0L) }
+        return teamRepository.findAllCards().map { card ->
+            TeamSummaryResponse(
+                id = card.slug,
+                name = card.name,
+                slogan = card.slogan,
+                accent = card.accent,
+                votes = voteCounts[card.id] ?: 0L,
+                president = card.presidentResponse(),
+                vp = card.vpResponse(),
+            )
+        }
     }
 
     fun getDetail(slug: String): TeamDetailResponse {
@@ -52,16 +62,6 @@ class TeamService(
         val contentType = candidate.photoContentType ?: "application/octet-stream"
         return photo to contentType
     }
-
-    private fun toSummary(team: Team, votes: Long) = TeamSummaryResponse(
-        id = team.slug,
-        name = team.name,
-        slogan = team.slogan,
-        accent = team.accent,
-        votes = votes,
-        president = team.president.toResponse(team.slug, "president"),
-        vp = team.vp.toResponse(team.slug, "vp"),
-    )
 
     private fun toDetail(team: Team, votes: Long) = TeamDetailResponse(
         id = team.slug,

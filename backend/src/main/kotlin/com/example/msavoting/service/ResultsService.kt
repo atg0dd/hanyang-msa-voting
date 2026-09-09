@@ -20,17 +20,17 @@ class ResultsService(
         val voteCounts = voteRepository.countGroupedByTeam().associate { it.teamId to it.voteCount }
         val totalVotesCast = voteCounts.values.sum()
 
-        val teamResults = teamRepository.findAll()
-            .map { team ->
-                val votes = voteCounts[team.id] ?: 0L
+        val teamResults = teamRepository.findAllCards()
+            .map { card ->
+                val votes = voteCounts[card.id] ?: 0L
                 TeamResultResponse(
-                    id = team.slug,
-                    name = team.name,
-                    accent = team.accent,
+                    id = card.slug,
+                    name = card.name,
+                    accent = card.accent,
                     votes = votes,
                     percentage = percentageOf(votes, totalVotesCast),
-                    president = team.president.toResponse(team.slug, "president"),
-                    vp = team.vp.toResponse(team.slug, "vp"),
+                    president = card.presidentResponse(),
+                    vp = card.vpResponse(),
                 )
             }
             .sortedByDescending { it.votes }
