@@ -1,17 +1,4 @@
-import { useEffect, useState } from "react";
-
-// Target: election start, Sep 14 2026 00:00 KST
-const TARGET = new Date("2026-09-14T00:00:00+09:00").getTime();
-
-function getTimeLeft() {
-  const diff = Math.max(TARGET - Date.now(), 0);
-  return {
-    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-    minutes: Math.floor((diff / (1000 * 60)) % 60),
-    seconds: Math.floor((diff / 1000) % 60),
-  };
-}
+import { useElectionCountdown } from "../hooks/useElectionCountdown";
 
 const units = [
   { key: "days", label: "Өдөр" },
@@ -21,12 +8,7 @@ const units = [
 ];
 
 export default function CountdownTimer() {
-  const [time, setTime] = useState(getTimeLeft());
-
-  useEffect(() => {
-    const id = setInterval(() => setTime(getTimeLeft()), 1000);
-    return () => clearInterval(id);
-  }, []);
+  const { timeLeft } = useElectionCountdown();
 
   return (
     <div className="flex items-start justify-center">
@@ -37,7 +19,7 @@ export default function CountdownTimer() {
               <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent" />
               <div className="relative flex items-center justify-center py-3 sm:py-5 md:py-6 lg:py-7">
                 <span className="font-display text-3xl font-bold tabular-nums text-white sm:text-4xl md:text-5xl lg:text-6xl">
-                  {String(time[u.key]).padStart(2, "0")}
+                  {String(timeLeft[u.key]).padStart(2, "0")}
                 </span>
               </div>
             </div>

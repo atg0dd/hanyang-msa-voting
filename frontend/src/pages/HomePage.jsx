@@ -1,12 +1,21 @@
 import { Link } from "react-router-dom";
 import CountdownTimer from "../components/CountdownTimer";
 import { ArrowRight, FileText, ClipboardList } from "../components/icons";
+import { useElectionCountdown } from "../hooks/useElectionCountdown";
 import "../styles/transitions.css";
 
 const ELECTION_RULES_URL = "https://drive.google.com/drive/folders/1srOj0nkSCNG6IuFpA44xreFZswawHaIl?hl=ko";
 const APPLICATION_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSerwT2LGy8s9Hy9_e6qLuL_xV-ocQVqCpg_EBdH5PQbR15yRQ/viewform?usp=header";
 
+const HEADINGS = {
+  before: "Сонгууль Эхлэхэд",
+  open: "Сонгууль Дуусхад",
+  after: "Сонгууль Дууссан",
+};
+
 export default function HomePage() {
+  const { status } = useElectionCountdown();
+
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-navy-950 px-4 text-white sm:px-6">
       <div className="pointer-events-none absolute inset-0">
@@ -22,7 +31,7 @@ export default function HomePage() {
 
       <div className="transition-in relative mx-auto flex max-w-2xl flex-col items-center py-8 text-center sm:py-16">
         <h1 className="font-display text-2xl font-semibold leading-tight sm:text-4xl md:text-5xl">
-          Сонгууль Эхлэхэд
+          {HEADINGS[status]}
         </h1>
         <p className="mt-3 max-w-md text-sm text-white/60 sm:mt-4 sm:text-base">
           2026 оны Ханьян ERICA Монгол Оюутны Холбооны Сонгууль
