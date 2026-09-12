@@ -5,15 +5,19 @@ import CandidateCard from "../components/CandidateCard";
 import { accentMap } from "../data/teams";
 import { getTeamById } from "../lib/api";
 import { useApi } from "../hooks/useApi";
+import { VOTING_START_LABEL } from "../lib/election";
+import { useVotingStatus } from "../hooks/useVotingStatus";
 
 export default function ManifestoPage() {
   const { teamId } = useParams();
   const { data: team, loading, error } = useApi(() => getTeamById(teamId), [teamId]);
+  const votingStatus = useVotingStatus();
 
   if (loading) return <div className="py-24 text-center text-navy-900/50">Ачааллаж байна…</div>;
   if (error || !team) return <Navigate to="/candidates" replace />;
 
   const accent = accentMap[team.accent];
+  const votingOpen = votingStatus === "open";
 
   return (
     <div>
@@ -29,12 +33,23 @@ export default function ManifestoPage() {
             <span className="hidden text-navy-900/20 sm:inline">|</span>
             <span className="hidden truncate font-semibold text-navy-900 sm:inline">{team.name}</span>
           </div>
-          <Link
-            to={`/vote/${team.id}`}
-            className={`shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold text-white ${accent.solid}`}
-          >
-            🗳️ Санал өгөх
-          </Link>
+          {votingOpen ? (
+            <Link
+              to={`/vote/${team.id}`}
+              className={`shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold text-white ${accent.solid}`}
+            >
+              🗳️ Санал өгөх
+            </Link>
+          ) : (
+            <button
+              type="button"
+              disabled
+              title={votingStatus === "before" ? `Санал хураалт ${VOTING_START_LABEL}-аас эхэлнэ` : "Санал хураалт дууссан"}
+              className="shrink-0 cursor-not-allowed whitespace-nowrap rounded-lg bg-navy-900/10 px-4 py-2 text-sm font-semibold text-navy-900/40"
+            >
+              🗳️ Санал өгөх
+            </button>
+          )}
         </div>
       </div>
 
@@ -81,15 +96,29 @@ export default function ManifestoPage() {
           <span className="text-2xl">🗳️</span>
           <h3 className="mt-3 font-display text-xl font-semibold">Итгэлтэй байна уу? Саналаа өгье.</h3>
           <p className="mx-auto mt-2 max-w-sm text-sm text-white/60">
-            Санал хураалт 2026 оны 9-р сарын 14–15-нд явагдана. Таны санал нууц бөгөөд шифрлэгдсэн болно.
+            {votingStatus === "before"
+              ? `Санал хураалт ${VOTING_START_LABEL}-аас эхэлнэ. Таны санал нууц бөгөөд шифрлэгдсэн болно.`
+              : votingStatus === "after"
+                ? "Санал хураалт дууссан. Оролцсонд баярлалаа!"
+                : "Санал хураалт 2026 оны 9-р сарын 14–15-нд явагдана. Таны санал нууц бөгөөд шифрлэгдсэн болно."}
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              to={`/vote/${team.id}`}
-              className={`rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 ${accent.solid}`}
-            >
-              {team.name}-д санал өгөх
-            </Link>
+            {votingOpen ? (
+              <Link
+                to={`/vote/${team.id}`}
+                className={`rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 ${accent.solid}`}
+              >
+                {team.name}-д санал өгөх
+              </Link>
+            ) : (
+              <button
+                type="button"
+                disabled
+                className="cursor-not-allowed rounded-lg bg-white/10 px-5 py-2.5 text-sm font-semibold text-white/40"
+              >
+                {team.name}-д санал өгөх
+              </button>
+            )}
             <Link to="/candidates" className="text-sm font-semibold text-white/70 transition hover:text-white">
               Бусад багуудыг үзэх
             </Link>

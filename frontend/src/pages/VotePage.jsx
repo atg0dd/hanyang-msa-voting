@@ -4,10 +4,13 @@ import { ArrowLeft, ShieldCheck, Mail, KeyRound, Check } from "../components/ico
 import { accentMap } from "../data/teams";
 import { getTeamById, requestVoteCode, submitVote } from "../lib/api";
 import { useApi } from "../hooks/useApi";
+import { VOTING_START_LABEL } from "../lib/election";
+import { useVotingStatus } from "../hooks/useVotingStatus";
 
 export default function VotePage() {
   const { teamId } = useParams();
   const { data: team, loading: teamLoading, error: teamError } = useApi(() => getTeamById(teamId), [teamId])
+  const votingStatus = useVotingStatus();
 
   const [stage, setStage] = useState("email"); // email | code | receipt
   const [email, setEmail] = useState("");
@@ -29,6 +32,38 @@ export default function VotePage() {
   if (teamLoading) return <div className="flex min-h-screen items-center justify-center text-navy-900/50">Ачааллаж байна…</div>;
   if (teamError || !team) return <Navigate to="/candidates" replace />;
   const accent = accentMap[team.accent];
+
+  if (votingStatus !== "open") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#F0F2FA] px-6">
+        <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-card">
+          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-navy-900/5 text-2xl">
+            🗳️
+          </span>
+          <h1 className="mt-4 font-display text-xl font-semibold text-navy-900">
+            {votingStatus === "before" ? "Санал хураалт эхлээгүй байна" : "Санал хураалт дууссан"}
+          </h1>
+          <p className="mx-auto mt-2 max-w-xs text-sm text-navy-900/60">
+            {votingStatus === "before"
+              ? `${team.name}-д санал өгөх боломж ${VOTING_START_LABEL}-аас нээгдэнэ.`
+              : `${team.name}-д баярлалаа — санал хураалт хаагдсан тул одоо санал өгөх боломжгүй.`}
+          </p>
+          <Link
+            to={`/team/${team.id}`}
+            className="mt-6 inline-block w-full rounded-lg bg-navy-950 py-2.5 text-sm font-semibold text-white hover:bg-navy-900"
+          >
+            Мөрийн хөтөлбөр рүү буцах
+          </Link>
+          <Link
+            to="/candidates"
+            className="mt-2 inline-block w-full rounded-lg border border-navy-900/15 py-2.5 text-sm font-semibold text-navy-900 hover:bg-navy-900/5"
+          >
+            Бусад багуудыг үзэх
+          </Link>
+        </div>
+      </div>
+    );
+  }
   const codeComplete = code.every((d) => d !== "");
 
   async function handleSendCode(e) {
