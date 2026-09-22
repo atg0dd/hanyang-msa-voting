@@ -4,13 +4,24 @@ import { Instagram } from "./icons";
 export default function Footer() {
   return (
     <footer className="border-t border-navy-900/10 bg-navy-950 text-white/60">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-8 text-sm md:flex-row md:items-center md:justify-between">
+      {/* pb-20/md:pr-52: clearance so the fixed LanguageToggle (bottom-4 right-4)
+          never sits on top of the credit link or the Instagram icon. */}
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-8 pb-20 text-sm md:flex-row md:items-center md:justify-between md:pb-8 md:pr-52">
         <div className="flex items-center gap-2 font-display font-semibold text-white">
           <img src={logo} alt="MSA HYU ERICA" className="h-7 w-7 rounded-full object-contain" />
           MSA Election
           <span className="ml-2 font-normal text-white/40">© 2026 MSA Hanyang ERICA. All rights reserved.</span>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
+          <a
+            href="https://bayasgalan.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-medium text-white/35 transition hover:text-white/70"
+          >
+            Built by Bayasgalan Erdenebat
+          </a>
+          <span className="h-3 w-px bg-white/10" />
           <a
             href="https://www.instagram.com/msa_erica/"
             target="_blank"
