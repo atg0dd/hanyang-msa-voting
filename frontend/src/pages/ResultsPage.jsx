@@ -7,12 +7,13 @@ import {
 import { getResults } from "../lib/api";
 import { useApi } from "../hooks/useApi";
 import { useLanguage } from "../lib/LanguageContext";
+import { localizeTeam } from "../lib/content";
 
 const barColors = { blue: "#3B82F6", purple: "#A855F7", green: "#10B981" };
 
 export default function ResultsPage() {
   const { data: results, loading, error } = useApi(getResults, []);
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
 
   if (loading) {
     return (
@@ -29,7 +30,8 @@ export default function ResultsPage() {
     );
   }
 
-  const { totalVotesCast, totalEligibleVoters, turnoutPercentage, teams } = results;
+  const { totalVotesCast, totalEligibleVoters, turnoutPercentage } = results;
+  const teams = results.teams.map((team) => localizeTeam(team, lang));
   const leading = teams[0]; // already sorted descending by the backend
 
   const chartData = teams.map((team) => ({
