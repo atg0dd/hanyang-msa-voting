@@ -8,16 +8,18 @@ import { useApi } from "../hooks/useApi";
 import { VOTING_START_LABEL } from "../lib/election";
 import { useVotingStatus } from "../hooks/useVotingStatus";
 import { useLanguage } from "../lib/LanguageContext";
+import { localizeTeam } from "../lib/content";
 
 export default function ManifestoPage() {
   const { teamId } = useParams();
-  const { data: team, loading, error } = useApi(() => getTeamById(teamId), [teamId]);
+  const { data: rawTeam, loading, error } = useApi(() => getTeamById(teamId), [teamId]);
   const votingStatus = useVotingStatus();
   const { lang, t } = useLanguage();
 
   if (loading) return <div className="py-24 text-center text-navy-900/50">{t("common.loading")}</div>;
-  if (error || !team) return <Navigate to="/candidates" replace />;
+  if (error || !rawTeam) return <Navigate to="/candidates" replace />;
 
+  const team = localizeTeam(rawTeam, lang);
   const accent = accentMap[team.accent];
   const votingOpen = votingStatus === "open";
   const startLabel = VOTING_START_LABEL[lang];

@@ -4,6 +4,7 @@ import { API_BASE_URL } from "../lib/api";
 import { VOTING_START_LABEL } from "../lib/election";
 import { useVotingStatus } from "../hooks/useVotingStatus";
 import { useLanguage } from "../lib/LanguageContext";
+import { localizeTeam } from "../lib/content";
 
 function CandidateAvatar({ person, accent }) {
   if (person.photoUrl) {
@@ -23,10 +24,11 @@ function CandidateAvatar({ person, accent }) {
   );
 }
 
-export default function TeamCard({ team }) {
-  const accent = accentMap[team.accent];
+export default function TeamCard({ team: rawTeam }) {
   const votingStatus = useVotingStatus();
   const { lang, t } = useLanguage();
+  const team = localizeTeam(rawTeam, lang);
+  const accent = accentMap[team.accent];
 
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-navy-900/5 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
