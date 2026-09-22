@@ -7,7 +7,7 @@ export const teamContentKo = {
   bloom: {
     slogan: "함께 시작하고, 함께 이루어내요!",
     president: {
-      name: "도르지 홍고르졸",
+      name: "헝거르졸",
       dept: "건축공학과",
       bio: [
         "2022년 (9월 입학)",
@@ -46,7 +46,7 @@ export const teamContentKo = {
       ].join("\n"),
     },
     vp: {
-      name: "바담하탄 도르지파감",
+      name: "더르지파감",
       dept: "경영학과",
       bio: [
         "2021년 (9월 입학)",
@@ -108,7 +108,7 @@ export const teamContentKo = {
 
   unity: {
     president: {
-      name: "에르덴바트 바야스갈랑",
+      name: "바야스갈랑",
       dept: "컴퓨터공학과",
       bio: [
         "2023년 3월 한양대학교 ERICA 캠퍼스 컴퓨터공학과에 HISP(4년간 50% 장학금)를 받고 입학하여 현재까지 성공적으로 수학하고 있음.",
@@ -126,7 +126,7 @@ export const teamContentKo = {
       ].join("\n"),
     },
     vp: {
-      name: "촐룬바트 후슬렝",
+      name: "후술렝",
       dept: "컴퓨터공학과",
       bio: [
         "2023년 9월부터 현재까지 한양대학교 ERICA 캠퍼스에서 컴퓨터공학을 70% 장학금을 받으며 전공하고 있음.",
