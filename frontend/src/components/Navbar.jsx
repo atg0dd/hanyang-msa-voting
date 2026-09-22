@@ -1,18 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
-
-const navItems = [
-  { label: "Нүүр", to: "/home" },
-  { label: "Нэр дэвшигчид", to: "/home", hash: "candidates" },
-  { label: "Үр дүн", to: "/results" },
-];
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function Navbar() {
+  const { t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
   const [hidden, setHidden] = useState(false);
   const lastScrollY = useRef(0);
+
+  const navItems = [
+    { key: "nav.home", to: "/home" },
+    { key: "nav.candidates", to: "/home", hash: "candidates" },
+    { key: "nav.results", to: "/results" },
+  ];
 
   useEffect(() => {
     function handleScroll() {
@@ -56,14 +58,14 @@ export default function Navbar() {
         <nav className="flex items-center gap-1 rounded-full border border-navy-900/10 bg-white/90 px-1.5 py-1.5 text-xs font-medium text-navy-900/55 shadow-sm backdrop-blur sm:gap-1.5 sm:px-2 sm:text-sm">
           {navItems.map((item) => (
             <Link
-              key={item.label}
+              key={item.key}
               to={item.to}
               onClick={(e) => handleNavClick(e, item)}
               className={`whitespace-nowrap rounded-full px-2.5 py-1.5 transition-colors duration-200 hover:text-navy-900 sm:px-3.5 ${
                 location.pathname === item.to && !item.hash ? "bg-navy-900/5 text-navy-900" : ""
               }`}
             >
-              {item.label}
+              {t(item.key)}
             </Link>
           ))}
         </nav>

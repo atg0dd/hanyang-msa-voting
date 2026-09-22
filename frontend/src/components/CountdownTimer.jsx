@@ -1,14 +1,16 @@
 import { useElectionCountdown } from "../hooks/useElectionCountdown";
+import { useLanguage } from "../lib/LanguageContext";
 
 const units = [
-  { key: "days", label: "Өдөр" },
-  { key: "hours", label: "Цаг" },
-  { key: "minutes", label: "Минут" },
-  { key: "seconds", label: "Секунд" },
+  { key: "days", labelKey: "countdown.days" },
+  { key: "hours", labelKey: "countdown.hours" },
+  { key: "minutes", labelKey: "countdown.minutes" },
+  { key: "seconds", labelKey: "countdown.seconds" },
 ];
 
 export default function CountdownTimer() {
   const { timeLeft } = useElectionCountdown();
+  const { t } = useLanguage();
 
   return (
     <div className="flex items-start justify-center">
@@ -24,7 +26,7 @@ export default function CountdownTimer() {
               </div>
             </div>
             <span className="mt-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/50 sm:mt-3 sm:text-xs">
-              {u.label}
+              {t(u.labelKey)}
             </span>
           </div>
           {i < units.length - 1 && (

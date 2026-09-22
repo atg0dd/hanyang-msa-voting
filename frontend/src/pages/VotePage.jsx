@@ -6,11 +6,13 @@ import { getTeamById, requestVoteCode, submitVote } from "../lib/api";
 import { useApi } from "../hooks/useApi";
 import { VOTING_START_LABEL } from "../lib/election";
 import { useVotingStatus } from "../hooks/useVotingStatus";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function VotePage() {
   const { teamId } = useParams();
   const { data: team, loading: teamLoading, error: teamError } = useApi(() => getTeamById(teamId), [teamId])
   const votingStatus = useVotingStatus();
+  const { lang, t } = useLanguage();
 
   const [stage, setStage] = useState("email"); // email | code | receipt
   const [email, setEmail] = useState("");
@@ -29,7 +31,7 @@ export default function VotePage() {
     return () => clearInterval(id);
   }, [stage, resendIn]);
 
-  if (teamLoading) return <div className="flex min-h-screen items-center justify-center text-navy-900/50">Ачааллаж байна…</div>;
+  if (teamLoading) return <div className="flex min-h-screen items-center justify-center text-navy-900/50">{t("common.loading")}</div>;
   if (teamError || !team) return <Navigate to="/candidates" replace />;
   const accent = accentMap[team.accent];
 
@@ -41,24 +43,24 @@ export default function VotePage() {
             🗳️
           </span>
           <h1 className="mt-4 font-display text-xl font-semibold text-navy-900">
-            {votingStatus === "before" ? "Санал хураалт эхлээгүй байна" : "Санал хураалт дууссан"}
+            {votingStatus === "before" ? t("vote.blocked.beforeHeading") : t("vote.blocked.afterHeading")}
           </h1>
           <p className="mx-auto mt-2 max-w-xs text-sm text-navy-900/60">
             {votingStatus === "before"
-              ? `${team.name}-д санал өгөх боломж ${VOTING_START_LABEL}-аас нээгдэнэ.`
-              : `${team.name}-д баярлалаа — санал хураалт хаагдсан тул одоо санал өгөх боломжгүй.`}
+              ? t("vote.blocked.beforeBody", { team: team.name, date: VOTING_START_LABEL[lang] })
+              : t("vote.blocked.afterBody", { team: team.name })}
           </p>
           <Link
             to={`/team/${team.id}`}
             className="mt-6 inline-block w-full rounded-lg bg-navy-950 py-2.5 text-sm font-semibold text-white hover:bg-navy-900"
           >
-            Мөрийн хөтөлбөр рүү буцах
+            {t("vote.blocked.backToManifesto")}
           </Link>
           <Link
             to="/candidates"
             className="mt-2 inline-block w-full rounded-lg border border-navy-900/15 py-2.5 text-sm font-semibold text-navy-900 hover:bg-navy-900/5"
           >
-            Бусад багуудыг үзэх
+            {t("vote.blocked.otherTeams")}
           </Link>
         </div>
       </div>
@@ -69,7 +71,7 @@ export default function VotePage() {
   async function handleSendCode(e) {
     e.preventDefault();
     if (!/^[a-zA-Z0-9._%+-]+@hanyang\.ac\.kr$/.test(email)) {
-      setEmailError("@hanyang.ac.kr-ээр төгссөн байх ёстой");
+      setEmailError(t("vote.email.invalid"));
       return;
     }
     setEmailError("");
@@ -115,7 +117,7 @@ export default function VotePage() {
     e.preventDefault();
     const entered = code.join("");
     if (entered.length < 6) {
-      setCodeError("6 оронтой кодоо бүтэн оруулна уу.");
+      setCodeError(t("vote.code.incomplete"));
       return;
     }
     setCodeError("");
@@ -148,10 +150,10 @@ export default function VotePage() {
         <div className="mx-auto flex max-w-lg items-center gap-3 px-6 py-4 text-sm">
           <Link to="/candidates" className="flex items-center gap-1.5 text-navy-900/60 hover:text-navy-900">
             <ArrowLeft size={16} />
-            Буцах
+            {t("vote.back")}
           </Link>
           <span className="text-navy-900/20">|</span>
-          <span className="font-semibold text-navy-900">MSA Сонгууль — Саналаа өгөх</span>
+          <span className="font-semibold text-navy-900">{t("vote.title")}</span>
         </div>
       </div>
 
@@ -163,7 +165,7 @@ export default function VotePage() {
                 {stage === "email" ? <Mail size={14} /> : <Check size={14} />}
               </span>
               <span className={`text-sm font-semibold ${stage === "email" ? "text-navy-900" : "text-navy-900/40"}`}>
-                Имэйл баталгаажуулах
+                {t("vote.step.email")}
               </span>
             </div>
             <span className="h-px w-8 bg-navy-900/15" />
@@ -176,7 +178,7 @@ export default function VotePage() {
                 <KeyRound size={14} />
               </span>
               <span className={`text-sm font-semibold ${stage === "code" ? "text-navy-900" : "text-navy-900/40"}`}>
-                Код оруулах
+                {t("vote.step.code")}
               </span>
             </div>
           </div>
@@ -185,7 +187,7 @@ export default function VotePage() {
         {stage !== "receipt" && (
           <div className="mb-6 flex items-center justify-between rounded-2xl bg-white p-5 shadow-card">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-navy-900/40">Санал өгөх баг</p>
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-navy-900/40">{t("vote.summary.team")}</p>
               <div className="mt-1 flex items-center gap-2">
                 <span className={`h-2 w-2 rounded-full ${accent.bar}`} />
                 <p className="font-semibold text-navy-900">{team.name}</p>
@@ -213,15 +215,14 @@ export default function VotePage() {
               <Mail size={20} />
             </span>
             <h1 className="mt-4 font-display text-xl font-semibold text-navy-900">
-              Оюутны имэйлээ баталгаажуулна уу
+              {t("vote.email.heading")}
             </h1>
             <p className="mt-1.5 text-sm text-navy-900/60">
-              Ханьян Их Сургуулийн ERICA-ийн имэйл хаягаа оруулна уу. Таныг баталгаажуулахын тулд бид
-              6 оронтой код илгээх болно.
+              {t("vote.email.body")}
             </p>
 
             <label className="mt-6 block text-xs font-semibold uppercase tracking-wide text-navy-900/50">
-              Оюутны имэйл
+              {t("vote.email.label")}
             </label>
             <input
               type="email"
@@ -233,7 +234,7 @@ export default function VotePage() {
             {emailError ? (
               <p className="mt-1.5 text-xs text-red-600">{emailError}</p>
             ) : (
-              <p className="mt-1.5 text-xs text-navy-900/40">@hanyang.ac.kr-ээр төгссөн байх ёстой</p>
+              <p className="mt-1.5 text-xs text-navy-900/40">{t("vote.email.hint")}</p>
             )}
 
             <button
@@ -241,11 +242,11 @@ export default function VotePage() {
               disabled={!email || sending}
               className="mt-5 w-full rounded-lg bg-blue-600 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
             >
-              {sending ? "Илгээж байна…" : "Баталгаажуулах код илгээх"}
+              {sending ? t("vote.email.sending") : t("vote.email.submit")}
             </button>
 
             <p className="mt-4 text-center text-xs text-navy-900/40">
-              Бүртгэлтэй оюутан тус бүр нэг л удаа санал өгөх боломжтой. Таны санал нууц байна.
+              {t("vote.email.footnote")}
             </p>
           </form>
         )}
@@ -255,20 +256,19 @@ export default function VotePage() {
             <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
               <KeyRound size={20} />
             </span>
-            <h1 className="mt-4 font-display text-xl font-semibold text-navy-900">Кодоо оруулна уу</h1>
+            <h1 className="mt-4 font-display text-xl font-semibold text-navy-900">{t("vote.code.heading")}</h1>
             <p className="mt-1.5 text-sm text-navy-900/60">
-              Бид <span className="font-semibold text-navy-900">{email}</span> хаяг руу 6 оронтой код
-              илгээлээ. Баталгаажуулсны дараа{" "}
-              <span className={`font-semibold ${accent.text}`}>{team.name}</span>-д өгсөн таны санал
-              бүртгэгдэнэ.
+              {t("vote.code.prefix")}<span className="font-semibold text-navy-900">{email}</span>
+              {t("vote.code.middle")}
+              <span className={`font-semibold ${accent.text}`}>{team.name}</span>
+              {t("vote.code.suffix")}
             </p>
             <p className="mt-2 text-xs text-navy-900/40">
-              Имэйл ирэхэд хэдэн минут орчим саатаж болзошгүй тул түр хүлээнэ үү. Кодыг олохгүй бол
-              спам/junk хавтсаа шалгана уу.
+              {t("vote.code.warning")}
             </p>
 
             <label className="mt-5 block text-xs font-semibold uppercase tracking-wide text-navy-900/50">
-              Баталгаажуулах код
+              {t("vote.code.label")}
             </label>
             <div className="mt-2 flex justify-between gap-2">
               {code.map((digit, i) => (
@@ -290,7 +290,7 @@ export default function VotePage() {
               disabled={!codeComplete || verifying}
               className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
             >
-              {verifying ? "Шалгаж байна…" : "Баталгаажуулж, санал өгөх"}
+              {verifying ? t("vote.code.verifying") : t("vote.code.submit")}
               {!verifying && <Check size={15} />}
             </button>
 
@@ -300,7 +300,7 @@ export default function VotePage() {
                 onClick={() => setStage("email")}
                 className="flex items-center gap-1 text-navy-900/50 hover:text-navy-900"
               >
-                <ArrowLeft size={13} /> Имэйл солих
+                <ArrowLeft size={13} /> {t("vote.code.changeEmail")}
               </button>
               <button
                 type="button"
@@ -308,7 +308,7 @@ export default function VotePage() {
                 onClick={handleResendCode}
                 className="text-navy-900/40 disabled:cursor-not-allowed"
               >
-                {resendIn > 0 ? `${resendIn}с дараа дахин илгээх` : "Кодыг дахин илгээх"}
+                {resendIn > 0 ? t("vote.code.resendIn", { n: resendIn }) : t("vote.code.resend")}
               </button>
             </div>
           </form>
@@ -319,34 +319,34 @@ export default function VotePage() {
             <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-50 text-2xl">
               🗳️
             </span>
-            <h1 className="mt-4 font-display text-xl font-semibold text-navy-900">Санал тоологдлоо!</h1>
+            <h1 className="mt-4 font-display text-xl font-semibold text-navy-900">{t("vote.receipt.heading")}</h1>
             <p className="mx-auto mt-2 max-w-xs text-sm text-navy-900/60">
-              {team.name}-д өгсөн таны санал бүртгэгдэж, шифрлэгдлээ. Оролцсонд баярлалаа.
+              {t("vote.receipt.body", { team: team.name })}
             </p>
 
             <div className="mt-6 space-y-3 rounded-xl bg-navy-900/5 p-4 text-left text-sm">
               <h2 className="text-xs font-semibold uppercase tracking-wide text-navy-900/40">
-                Албан ёсны саналын баримт
+                {t("vote.receipt.title")}
               </h2>
               <div className="flex justify-between">
-                <span className="text-navy-900/50">Баримтын дугаар</span>
+                <span className="text-navy-900/50">{t("vote.receipt.id")}</span>
                 <span className="font-mono font-semibold text-navy-900">{receipt.id}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-navy-900/50">Санал өгсөн</span>
+                <span className="text-navy-900/50">{t("vote.receipt.voter")}</span>
                 <span className="font-medium text-navy-900">{receipt.voter}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-navy-900/50">Санал өгсөн баг</span>
+                <span className="text-navy-900/50">{t("vote.receipt.team")}</span>
                 <span className="font-medium text-navy-900">{receipt.team}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-navy-900/50">Цаг</span>
+                <span className="text-navy-900/50">{t("vote.receipt.time")}</span>
                 <span className="font-medium text-navy-900">{receipt.time}</span>
               </div>
               <div className="flex items-center justify-center gap-1.5 border-t border-navy-900/10 pt-3 text-xs text-emerald-600">
                 <ShieldCheck size={14} />
-                Санал шифрлэгдэж, бүртгэгдсэн
+                {t("vote.receipt.encrypted")}
               </div>
             </div>
 
@@ -354,17 +354,16 @@ export default function VotePage() {
               to="/home"
               className="mt-6 inline-block w-full rounded-lg bg-navy-950 py-2.5 text-sm font-semibold text-white hover:bg-navy-900"
             >
-              Нүүр хуудас руу буцах
+              {t("vote.receipt.home")}
             </Link>
             <Link
               to="/results"
               className="mt-2 inline-block w-full rounded-lg border border-navy-900/15 py-2.5 text-sm font-semibold text-navy-900 hover:bg-navy-900/5"
             >
-              Сонгуулийн Үйл Явц
+              {t("vote.receipt.process")}
             </Link>
             <p className="mt-3 text-xs text-navy-900/40">
-              Санал хураалт 2026 оны 9-р сарын 15-нд 23:59 цагт хаагдсанаас хойш 24 цагийн дотор үр
-              дүнг зарлана.
+              {t("vote.receipt.footnote")}
             </p>
           </div>
         )}

@@ -3,6 +3,7 @@ import { accentMap } from "../data/teams";
 import { API_BASE_URL } from "../lib/api";
 import { VOTING_START_LABEL } from "../lib/election";
 import { useVotingStatus } from "../hooks/useVotingStatus";
+import { useLanguage } from "../lib/LanguageContext";
 
 function CandidateAvatar({ person, accent }) {
   if (person.photoUrl) {
@@ -25,6 +26,7 @@ function CandidateAvatar({ person, accent }) {
 export default function TeamCard({ team }) {
   const accent = accentMap[team.accent];
   const votingStatus = useVotingStatus();
+  const { lang, t } = useLanguage();
 
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-navy-900/5 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
@@ -38,7 +40,7 @@ export default function TeamCard({ team }) {
           <CandidateAvatar person={team.president} accent={accent} />
           <div>
             <p className="text-sm font-semibold text-navy-900">{team.president.name}</p>
-            <p className="text-xs text-navy-900/50">Ерөнхийлөгч · {team.president.dept}</p>
+            <p className="text-xs text-navy-900/50">{t("role.president")} · {team.president.dept}</p>
           </div>
         </div>
 
@@ -46,7 +48,7 @@ export default function TeamCard({ team }) {
           <CandidateAvatar person={team.vp} accent={accent} />
           <div>
             <p className="text-sm font-semibold text-navy-900">{team.vp.name}</p>
-            <p className="text-xs text-navy-900/50">Дэд ерөнхийлөгч · {team.vp.dept}</p>
+            <p className="text-xs text-navy-900/50">{t("role.vp")} · {team.vp.dept}</p>
           </div>
         </div>
 
@@ -58,7 +60,7 @@ export default function TeamCard({ team }) {
               to={`/vote/${team.id}`}
               className={`rounded-lg px-4 py-2.5 text-center text-sm font-semibold text-white transition-all duration-200 active:scale-[0.98] ${accent.solid}`}
             >
-              Энэ багт санал өгөх
+              {t("team.voteButton")}
             </Link>
           ) : (
             <div>
@@ -67,12 +69,12 @@ export default function TeamCard({ team }) {
                 disabled
                 className="w-full cursor-not-allowed rounded-lg bg-navy-900/10 px-4 py-2.5 text-center text-sm font-semibold text-navy-900/40"
               >
-                Энэ багт санал өгөх
+                {t("team.voteButton")}
               </button>
               <p className="mt-1.5 text-center text-[11px] text-navy-900/40">
                 {votingStatus === "before"
-                  ? `Санал хураалт ${VOTING_START_LABEL}-аас эхэлнэ`
-                  : "Санал хураалт дууссан"}
+                  ? t("voting.opensAt", { date: VOTING_START_LABEL[lang] })
+                  : t("voting.closed")}
               </p>
             </div>
           )}
@@ -80,7 +82,7 @@ export default function TeamCard({ team }) {
             to={`/team/${team.id}`}
             className="rounded-lg border border-navy-900/10 px-4 py-2.5 text-center text-sm font-semibold text-navy-900 transition-all duration-200 hover:bg-navy-900/5 active:scale-[0.98]"
           >
-            Мөрийн хөтөлбөр үзэх
+            {t("team.viewManifesto")}
           </Link>
         </div>
       </div>

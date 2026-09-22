@@ -4,16 +4,18 @@ import TeamCard from "../components/TeamCard";
 import Reveal from "../components/Reveal";
 import { getTeams } from "../lib/api";
 import { useApi } from "../hooks/useApi";
+import { useLanguage } from "../lib/LanguageContext";
 import "../styles/transitions.css";
 
 export default function CandidatesPage() {
   const { data: teams, loading, error } = useApi(getTeams, []);
-  
-  if (loading) 
-    return <div className="py-24 text-center text-navy-900/50">Ачааллаж байна…</div>;
-    
-  if (error) 
-    return <div className="py-24 text-center text-red-600">Мэдээлэл ачаалахад алдаа гарлаа.</div>;
+  const { t } = useLanguage();
+
+  if (loading)
+    return <div className="py-24 text-center text-navy-900/50">{t("common.loading")}</div>;
+
+  if (error)
+    return <div className="py-24 text-center text-red-600">{t("common.loadError")}</div>;
 
   return (
     <div>
@@ -21,20 +23,20 @@ export default function CandidatesPage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-3 sm:py-4 gap-2 text-xs sm:text-sm">
           <Link to="/home" className="group flex items-center gap-1 sm:gap-1.5 text-navy-900/60 hover:text-navy-900 transition-colors duration-300 whitespace-nowrap">
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform duration-300 flex-shrink-0" />
-            <span className="hidden sm:inline">Үндсэн хуудас руу буцах</span>
-            <span className="sm:hidden">Буцах</span>
+            <span className="hidden sm:inline">{t("candidates.back")}</span>
+            <span className="sm:hidden">{t("candidates.backShort")}</span>
           </Link>
-          <span className="font-semibold text-navy-900 text-right">Нэр дэвшигчидтэй танилцах</span>
+          <span className="font-semibold text-navy-900 text-right">{t("candidates.heading")}</span>
         </div>
       </div>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-8 sm:py-16 transition-in">
         <div className="mb-8 sm:mb-10 text-center">
           <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-navy-900">
-            Нэр дэвшигчидтэй танилцах
+            {t("candidates.heading")}
           </h1>
           <p className="mt-2 sm:mt-3 text-sm sm:text-base text-navy-900/60">
-            Сонгуулийн бүрэлдэхүүнийг бүхэлд нь гадна томилсон. Та итгэж буй баг сонгоно уу.
+            {t("candidates.subtitle")}
           </p>
         </div>
         <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

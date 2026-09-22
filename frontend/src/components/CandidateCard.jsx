@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ShieldCheck, ArrowRight, UserPlaceholder } from "./icons";
 import { API_BASE_URL } from "../lib/api";
+import { useLanguage } from "../lib/LanguageContext";
 
 const YEAR_RE = /^\s*\d{4}\s*[.\-–]?\s*(он|year|년)\b/i;
 const BULLET_RE = /^\s*[●•▪◦‣·∙*+–—-]\s+/;
@@ -52,6 +53,7 @@ function RichText({ text }) {
 export default function CandidateCard({ role, person, accent }) {
   const [flipped, setFlipped] = useState(false);
   const hasDetails = Boolean(person.bio?.trim() || person.achievements?.trim());
+  const { t } = useLanguage();
 
   return (
     <button
@@ -93,7 +95,7 @@ export default function CandidateCard({ role, person, accent }) {
 
             <div className="mt-auto flex items-center justify-end pt-3">
               <span className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold text-white ${accent.solid}`}>
-                Дэлгэрэнгүй
+                {t("card.viewMore")}
                 <ArrowRight size={12} />
               </span>
             </div>
@@ -111,24 +113,24 @@ export default function CandidateCard({ role, person, accent }) {
             <div className="h-full space-y-5 overflow-y-auto px-6 py-5 pr-5">
               {person.bio?.trim() && (
                 <section>
-                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-white/40">Танилцуулга</p>
+                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-white/40">{t("card.bio")}</p>
                   <RichText text={person.bio} />
                 </section>
               )}
               {person.achievements?.trim() && (
                 <section className={person.bio?.trim() ? "border-t border-white/10 pt-5" : ""}>
-                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-white/40">Амжилт, ололт</p>
+                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-white/40">{t("card.achievements")}</p>
                   <RichText text={person.achievements} />
                 </section>
               )}
               {!hasDetails && (
-                <p className="text-[13px] text-white/40">Дэлгэрэнгүй мэдээлэл оруулаагүй байна.</p>
+                <p className="text-[13px] text-white/40">{t("card.noDetails")}</p>
               )}
             </div>
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-navy-950 to-transparent" />
           </div>
 
-          <p className="shrink-0 px-6 pb-5 pt-3 text-[11px] font-medium text-white/30">← Буцах</p>
+          <p className="shrink-0 px-6 pb-5 pt-3 text-[11px] font-medium text-white/30">{t("card.back")}</p>
         </div>
       </div>
     </button>

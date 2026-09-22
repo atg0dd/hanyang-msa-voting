@@ -7,17 +7,20 @@ import { getTeamById } from "../lib/api";
 import { useApi } from "../hooks/useApi";
 import { VOTING_START_LABEL } from "../lib/election";
 import { useVotingStatus } from "../hooks/useVotingStatus";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function ManifestoPage() {
   const { teamId } = useParams();
   const { data: team, loading, error } = useApi(() => getTeamById(teamId), [teamId]);
   const votingStatus = useVotingStatus();
+  const { lang, t } = useLanguage();
 
-  if (loading) return <div className="py-24 text-center text-navy-900/50">Ачааллаж байна…</div>;
+  if (loading) return <div className="py-24 text-center text-navy-900/50">{t("common.loading")}</div>;
   if (error || !team) return <Navigate to="/candidates" replace />;
 
   const accent = accentMap[team.accent];
   const votingOpen = votingStatus === "open";
+  const startLabel = VOTING_START_LABEL[lang];
 
   return (
     <div>
@@ -27,8 +30,8 @@ export default function ManifestoPage() {
           <div className="flex min-w-0 items-center gap-3">
             <Link to="/candidates" className="flex shrink-0 items-center gap-1.5 text-navy-900/60 hover:text-navy-900">
               <ArrowLeft size={16} />
-              <span className="hidden sm:inline">Нэр дэвшигчид рүү буцах</span>
-              <span className="sm:hidden">Буцах</span>
+              <span className="hidden sm:inline">{t("manifesto.back")}</span>
+              <span className="sm:hidden">{t("candidates.backShort")}</span>
             </Link>
             <span className="hidden text-navy-900/20 sm:inline">|</span>
             <span className="hidden truncate font-semibold text-navy-900 sm:inline">{team.name}</span>
@@ -38,16 +41,16 @@ export default function ManifestoPage() {
               to={`/vote/${team.id}`}
               className={`shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold text-white ${accent.solid}`}
             >
-              🗳️ Санал өгөх
+              {t("manifesto.voteButton")}
             </Link>
           ) : (
             <button
               type="button"
               disabled
-              title={votingStatus === "before" ? `Санал хураалт ${VOTING_START_LABEL}-аас эхэлнэ` : "Санал хураалт дууссан"}
+              title={votingStatus === "before" ? t("voting.opensAt", { date: startLabel }) : t("voting.closed")}
               className="shrink-0 cursor-not-allowed whitespace-nowrap rounded-lg bg-navy-900/10 px-4 py-2 text-sm font-semibold text-navy-900/40"
             >
-              🗳️ Санал өгөх
+              {t("manifesto.voteButton")}
             </button>
           )}
         </div>
@@ -61,20 +64,20 @@ export default function ManifestoPage() {
               {team.name}
             </span>
             <h2 className="mt-4 font-display text-xl font-semibold text-navy-900 sm:text-2xl">
-              Нэр дэвшигчидтэй танилцах
+              {t("manifesto.candidatesHeading")}
             </h2>
-            <p className="mt-1.5 text-sm text-navy-900/50">Дэлгэрэнгүй мэдээлэл үзэхийн тулд картыг товшино уу</p>
+            <p className="mt-1.5 text-sm text-navy-900/50">{t("manifesto.candidatesHint")}</p>
           </div>
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <CandidateCard role="Ерөнхийлөгч" person={team.president} accent={accent} />
-            <CandidateCard role="Дэд ерөнхийлөгч" person={team.vp} accent={accent} />
+            <CandidateCard role={t("role.president")} person={team.president} accent={accent} />
+            <CandidateCard role={t("role.vp")} person={team.vp} accent={accent} />
           </div>
         </Reveal>
 
         {/* Key initiatives */}
         <Reveal className="mt-16">
           <h2 className="mb-4 font-display text-xl font-semibold text-navy-900 sm:text-2xl">
-            Гол санаачилгууд
+            {t("manifesto.initiativesHeading")}
           </h2>
           <div className="divide-y divide-navy-900/10">
             {team.initiatives.map((init) => (
@@ -94,13 +97,13 @@ export default function ManifestoPage() {
         {/* CTA */}
         <Reveal className="mt-16 rounded-2xl bg-navy-950 p-8 text-center text-white" delay={150}>
           <span className="text-2xl">🗳️</span>
-          <h3 className="mt-3 font-display text-xl font-semibold">Итгэлтэй байна уу? Саналаа өгье.</h3>
+          <h3 className="mt-3 font-display text-xl font-semibold">{t("manifesto.cta.heading")}</h3>
           <p className="mx-auto mt-2 max-w-sm text-sm text-white/60">
             {votingStatus === "before"
-              ? `Санал хураалт ${VOTING_START_LABEL}-аас эхэлнэ. Таны санал нууц бөгөөд шифрлэгдсэн болно.`
+              ? t("manifesto.cta.before", { date: startLabel })
               : votingStatus === "after"
-                ? "Санал хураалт дууссан. Оролцсонд баярлалаа!"
-                : "Санал хураалт 2026 оны 9-р сарын 14–15-нд явагдана. Таны санал нууц бөгөөд шифрлэгдсэн болно."}
+                ? t("manifesto.cta.after")
+                : t("manifesto.cta.open")}
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             {votingOpen ? (
@@ -108,7 +111,7 @@ export default function ManifestoPage() {
                 to={`/vote/${team.id}`}
                 className={`rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 ${accent.solid}`}
               >
-                {team.name}-д санал өгөх
+                {t("manifesto.voteFor", { team: team.name })}
               </Link>
             ) : (
               <button
@@ -116,11 +119,11 @@ export default function ManifestoPage() {
                 disabled
                 className="cursor-not-allowed rounded-lg bg-white/10 px-5 py-2.5 text-sm font-semibold text-white/40"
               >
-                {team.name}-д санал өгөх
+                {t("manifesto.voteFor", { team: team.name })}
               </button>
             )}
             <Link to="/candidates" className="text-sm font-semibold text-white/70 transition hover:text-white">
-              Бусад багуудыг үзэх
+              {t("manifesto.otherTeams")}
             </Link>
           </div>
         </Reveal>
