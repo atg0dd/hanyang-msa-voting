@@ -35,7 +35,7 @@ export const ko = {
 
   // HomeLandingPage ("/home")
   "landing.heroBadge": "2026년 학생회 선거",
-  "landing.heroTitle": "당신의 한 표가 몽골 유학생의 미래를 만듭니다",
+  "landing.heroTitle": "당신의 선택이 몽골 유학생의 미래를 만듭니다",
   "landing.heroSubtitle": "후보자들의 공약을 확인하고 현명한 선택을 해 주세요",
   "landing.cta.candidates": "후보자 소개 보기",
   "landing.cta.results": "결과 보기",
